@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/ic_refresh_48"
+        android:title="Refresh" />
+    <item
+        android:id="@+id/action_report"
+        android:icon="@drawable/ic_warning_shield_48"
+        android:title="Report"/>
+    <item
+        android:id="@+id/action_route"
+        android:icon="@drawable/ic_route_sign_48"
+        android:title="Route" />
+</menu>
