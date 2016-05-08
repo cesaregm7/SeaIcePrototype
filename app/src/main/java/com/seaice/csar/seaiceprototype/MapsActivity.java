@@ -12,6 +12,7 @@ import android.telephony.SmsManager;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -61,8 +62,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
         final LinearLayout ll = new LinearLayout(this);
         final ImageButton closeRoute = new ImageButton(this);
-        closeRoute.setImageResource(R.drawable.ic_cancel_48);
+        closeRoute.setImageResource(R.drawable.save);
         closeRoute.setBackgroundColor(0);
+        closeRoute.setPadding(0,0,50,50);
         closeRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +163,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 } else if (botonSeleccionado.equals("Report")) {
                     DialogReport dr = new DialogReport();
                     dr.show(getFragmentManager(), "Report");
+
                 }
                 return false;
             }
@@ -272,7 +275,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
         mapsAct = this;
     }
-
 
     /**
      * Manipulates the map once available.
