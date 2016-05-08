@@ -29,9 +29,8 @@ public class DialogReport extends DialogFragment {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.dialog_report, null));
-
         View view = inflater.inflate(R.layout.dialog_report,null);
+        builder.setView(view);
         Button sendBtn = (Button) view.findViewById(R.id.sendBtn);
         Button tomarFoto = (Button) view.findViewById(R.id.takePic);
         this.imagev = (ImageView) view.findViewById(R.id.imagenPeq);
