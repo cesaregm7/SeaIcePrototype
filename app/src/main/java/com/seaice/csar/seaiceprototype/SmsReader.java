@@ -3,6 +3,8 @@ package com.seaice.csar.seaiceprototype;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.telephony.SmsMessage;
@@ -39,6 +41,9 @@ public class SmsReader extends BroadcastReceiver {
                     try
                     {
                         MapsActivity.getInstance().putDataMap(message);
+                        //-----------------Borrar Mensaje
+                        deleteSMS(context, "+50258228830");
+
                     }
                     catch(Exception e)
                     {
@@ -60,5 +65,31 @@ public class SmsReader extends BroadcastReceiver {
 
         }
 
+    }
+
+    public void deleteSMS(Context context, String number) {
+        try {
+            System.out.println("Deleting SMS from inbox");
+            Uri uriSms = Uri.parse("content://sms");
+            Cursor c = context.getContentResolver().query(uriSms,
+                    new String[] { "_id", "thread_id", "address",
+                            "person", "date", "body" }, null, null, null);
+
+            if (c != null && c.moveToFirst()) {
+                do {
+                    long id = c.getLong(0);
+                    long threadId = c.getLong(1);
+                    String address = c.getString(2);
+                    String body = c.getString(5);
+                    if (address.equals(number)) {
+                        System.out.println("Deleting SMS with id: " + threadId);
+                        context.getContentResolver().delete(
+                                Uri.parse("content://sms/" + id), null, null);
+                    }
+                } while (c.moveToNext());
+            }
+        } catch (Exception e) {
+            System.out.println("Could not delete SMS from inbox: " + e.getMessage());
+        }
     }
 }
