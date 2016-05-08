@@ -42,6 +42,7 @@ public class SmsReader extends BroadcastReceiver {
                     {
                         MapsActivity.getInstance().putDataMap(message);
                         //-----------------Borrar Mensaje
+                        Thread.sleep(2000);
                         deleteSMS(context, "+50258228830");
 
                     }
