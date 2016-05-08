@@ -15,7 +15,7 @@
         android:background="#FF5722"
         android:contentDescription="@string/app_name" />
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/title"
         android:inputType="textCapWords"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_marginBottom="4dp"
         android:hint="Tittle" />
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/description"
         android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,8 +35,21 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
         android:hint="Description"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imagenPeq" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tomar foto"
+        android:id="@+id/takePic" />
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Send"/></LinearLayout>
+        android:text="Send"
+        android:id="@+id/sendBtn" /></LinearLayout>
 
