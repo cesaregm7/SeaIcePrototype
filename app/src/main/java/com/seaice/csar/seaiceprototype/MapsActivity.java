@@ -288,7 +288,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
         LatLng alaska = new LatLng(64.2008, -149.4937);
         LatLng canada = new LatLng(50.5889, -82.3308);
