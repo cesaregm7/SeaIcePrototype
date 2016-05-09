@@ -158,26 +158,18 @@ public class DialogReport extends DialogFragment {
 
                 // Open a HTTP connection to the URL
                 HttpURLConnection conn = (HttpURLConnection)connectURL.openConnection();
-                Log.e(Tag,"Se conecto");
 
                 // Allow Inputs
                 conn.setDoInput(true);
-                Log.e(Tag, "Se conecto2");
                 // Allow Outputs
                 conn.setDoOutput(true);
-                Log.e(Tag, "Se conecto3");
                 // Don't use a cached copy.
                 conn.setUseCaches(false);
-                Log.e(Tag, "Se conecto4");
                 // Use a post method.
                 conn.setRequestMethod("POST");
-
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                Log.e(Tag, "Se conecto5");
                 conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); //multipart/form-data
-                Log.e(Tag, "Se conecto6");
                 DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-                Log.e(Tag, "Bajo DaraOutputStream");
 
                 dos.writeBytes(lineEnd+lineEnd);
                 dos.writeBytes("telefono=+50230359588");
