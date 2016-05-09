@@ -174,7 +174,7 @@ public class DialogReport extends DialogFragment {
 
                 conn.setRequestProperty("Connection", "Keep-Alive");
                 Log.e(Tag, "Se conecto5");
-                conn.setRequestProperty("Content-Type", "multipart/form-data");
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); //multipart/form-data
                 Log.e(Tag, "Se conecto6");
                 DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
                 Log.e(Tag, "Bajo DaraOutputStream");
