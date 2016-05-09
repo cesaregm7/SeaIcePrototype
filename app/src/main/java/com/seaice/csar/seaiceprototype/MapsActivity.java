@@ -3,6 +3,7 @@ package com.seaice.csar.seaiceprototype;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
@@ -42,14 +43,17 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     ArrayList<ProtocolParser.Information> informacion;
     Dictionary dicCoordenadas = new Hashtable();
     Dictionary dicInfo = new Hashtable();
+    Dictionary dicMarker = new Hashtable();
     String prueba = "0^0^I saw a bear near this area^1^2.456,3.5546~1^0^Thin ice^1^2.456,3.5546~2^0^Blizzard^1^2.456,3.5546";
     boolean iRuta = false;
+    boolean iBorrar = false;
     Context ctx;
     ArrayList<Integer> keyList = new ArrayList<>();
     ArrayList<Integer> idsMandar = new ArrayList<>();
     ArrayList<Double> latsMandar = new ArrayList<>();
     ArrayList<Double> lngsMandar = new ArrayList<>();
     private static MapsActivity mapsAct;
+    private LocationDbHelper myLocationDbHelper = new LocationDbHelper(this);
 
     int indiceActual = 2;
 
@@ -64,49 +68,57 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         final ImageButton closeRoute = new ImageButton(this);
         closeRoute.setImageResource(R.drawable.save);
         closeRoute.setBackgroundColor(0);
-        closeRoute.setPadding(0,0,50,50);
+        closeRoute.setPadding(0, 0, 50, 50);
         closeRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //----------------------------Cerrar crear ruta--------------------------
+                if(iRuta){
+                    iRuta = false;
+                    ll.removeAllViews();
 
-                iRuta = false;
-                ll.removeAllViews();
+                    //MANDAR DATA AL SERVER
+                    String idsS = "";
+                    if (idsMandar.size() != 0) {
 
-                //MANDAR DATA AL SERVER
-                String idsS = "";
-                if (idsMandar.size() != 0) {
-
-                    for (Integer id : idsMandar) {
-                        idsS += id + ",";
-                    }
-                    idsS = idsS.substring(0, idsS.length() - 1);
-                    final String idSFinal = idsS;
-
-                    String latS = "";
-                    for (Double lat : latsMandar) {
-                        latS += lat + ",";
-                    }
-                    latS = latS.substring(0, latS.length() - 1);
-                    final String latSFinal =latS;
-
-                    String lngS = "";
-                    for (Double lng : lngsMandar) {
-                        lngS += lng + ",";
-                    }
-                    lngS = lngS.substring(0, lngS.length() - 1);
-                    final String lngSFinal = lngS;
-
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpManager hm = new HttpManager();
-                            hm.execute(idSFinal, latSFinal, lngSFinal);
+                        for (Integer id : idsMandar) {
+                            idsS += id + ",";
                         }
-                    });
+                        idsS = idsS.substring(0, idsS.length() - 1);
+                        final String idSFinal = idsS;
 
-                    thread.run();
+                        String latS = "";
+                        for (Double lat : latsMandar) {
+                            latS += lat + ",";
+                        }
+                        latS = latS.substring(0, latS.length() - 1);
+                        final String latSFinal =latS;
 
+                        String lngS = "";
+                        for (Double lng : lngsMandar) {
+                            lngS += lng + ",";
+                        }
+                        lngS = lngS.substring(0, lngS.length() - 1);
+                        final String lngSFinal = lngS;
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                HttpInsert hm = new HttpInsert();
+                                hm.execute(idSFinal, latSFinal, lngSFinal);
+                            }
+                        });
+
+                        thread.run();
+
+                    }
                 }
+                //-----------------------Cerrar borrar puntos-------------------------
+                if(iBorrar){
+                    iBorrar = false;
+                    ll.removeAllViews();
+                }
+
             }
         });
         MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -114,7 +126,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         mMap = mapFragment.getMap();
 
 
-        double[] punto1 = {64.2008, -149.4937};
+        /*double[] punto1 = {64.2008, -149.4937};
         double[] punto2 = {50.5889, -82.3308};
         double[] punto3 = {38.89, -77.03};
         String[] coso1 = {"","","",""};
@@ -129,7 +141,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         dicInfo.put(2, coso3);
         keyList.add(0);
         keyList.add(1);
-        keyList.add(2);
+        keyList.add(2);*/
         FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
         assert fabSpeedDial != null;
         fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
@@ -145,6 +157,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     else
                     {
                         sendRequest();
+
                     }
                     //RECIBIR REQUEST
                     //putDataMap(prueba);
@@ -163,6 +176,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 } else if (botonSeleccionado.equals("Report")) {
                     DialogReport dr = new DialogReport();
                     dr.show(getFragmentManager(), "Report");
+
+                }else if (botonSeleccionado.equals("Delete")) {
+                    iBorrar = true;
+                    ll.addView(closeRoute);
 
                 }
                 return false;
@@ -224,24 +241,87 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if (iRuta == true) {
+                if (iRuta) {
                     //mMap.clear();
                     MarkerOptions options = new MarkerOptions();
 
+
+                    indiceActual = (int) myLocationDbHelper.insertLocation(latLng.latitude, latLng.longitude);
+                    myLocationDbHelper.updateInfo(indiceActual," ~ ~ ~ ");
                     options.position(latLng);
+                    options.title(indiceActual+"");
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                     Marker marker = mMap.addMarker(options);
                     marker.showInfoWindow();
-                    indiceActual += 1;
+
                     keyList.add(indiceActual);
                     dicCoordenadas.put(indiceActual, new double[]{latLng.latitude, latLng.longitude});
                     dicInfo.put(indiceActual, new String[]{"", "", "", ""});
+                    dicMarker.put(indiceActual, marker);
                     //---------------Agregar Puntos a Listas-------------------
                     idsMandar.add(indiceActual);
                     latsMandar.add(latLng.latitude);
                     lngsMandar.add(latLng.longitude);
                 }
+                if (iBorrar) {
 
+                }
+
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                //LatLng latLng = marker.getPosition();
+
+                if(iBorrar)
+                {
+                    final int id = Integer.parseInt(marker.getTitle());
+                    marker.remove();
+
+                    keyList.remove(keyList.indexOf(id));
+                    dicCoordenadas.remove(id);
+                    dicInfo.remove(id);
+                    dicMarker.remove(id);
+                    myLocationDbHelper.deleteLocation(id);
+
+                    new HttpDelete().execute(id + "");
+/*
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            HttpDelete myHttpDelete = new HttpDelete();
+                            myHttpDelete.execute(id + "");
+                        }
+                    });
+
+                    thread.run();
+*/
+
+                    /*
+                    double latTemp, longTemp;
+                    latTemp = latLng.latitude;
+                    longTemp = latLng.longitude;
+                    for (int indiceMarcadores : keyList) {
+                        Toast.makeText(MapsActivity.this, keyList + " :v", Toast.LENGTH_SHORT).show();
+                        double[] coordTemp = (double[]) dicCoordenadas.get(indiceMarcadores);
+                        if (coordTemp[0] == latTemp && coordTemp[1] == longTemp) {
+                            Toast.makeText(MapsActivity.this, "Entro aqui :v", Toast.LENGTH_SHORT).show();
+                            ((Marker) dicMarker.get(indiceMarcadores)).remove();
+                            dicCoordenadas.remove(indiceMarcadores);
+                            dicInfo.remove(indiceMarcadores);
+                            dicMarker.remove(indiceMarcadores);
+                            myLocationDbHelper.deleteLocation(indiceMarcadores);
+                            HttpDelete myHttpDelete = new HttpDelete();
+                            myHttpDelete.doInBackground(indiceMarcadores + "");
+                        }
+                    }
+                    */
+
+                }
+                return false;
             }
         });
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -288,24 +368,34 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
-        LatLng alaska = new LatLng(64.2008, -149.4937);
-        LatLng canada = new LatLng(50.5889, -82.3308);
-        LatLng usa = new LatLng(38.89, -77.03);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.addMarker(new MarkerOptions()
-                .position(alaska)
-                .title("Alaska"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(alaska));
 
-        mMap.addMarker(new MarkerOptions()
-                .position(canada)
-                .title("Canada"));
+        Cursor markersC = myLocationDbHelper.readAllLocation();
+        while(markersC.moveToNext())
+        {
+            int lat = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_LATITUD);
+            int lng = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_LONGITUD);
+            int id = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_ID);
+            int miInfo = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_INFO);
 
-        mMap.addMarker(new MarkerOptions()
-                .position(usa)
-                .title("United States"));
+            LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
+
+            //Toast.makeText(MapsActivity.this, "lat:"+markersC.getFloat(lat)+",lng:"+markersC.getFloat(lng), Toast.LENGTH_SHORT).show();
+
+            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + ""));
+
+
+            keyList.add(markersC.getInt(id));
+            dicMarker.put(markersC.getInt(id), tempMarker);
+            dicCoordenadas.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
+            Toast.makeText(MapsActivity.this, markersC.getString(miInfo), Toast.LENGTH_SHORT).show();
+            dicInfo.put(markersC.getInt(id), markersC.getString(miInfo).split("~"));
+
+
+        }
+        markersC.close();
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(64.2008, -149.4937)));
+
     }
 
     @Override
@@ -339,6 +429,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 ((String[])dicInfo.get(index))[2] = informacion.get(i).number+"";
             }
         }
+
+        for(int idTemp:keyList){
+            String[] miInfoTemp = (String[])dicInfo.get(idTemp);
+            String stringInfo = miInfoTemp[0]+" ~"+miInfoTemp[1]+" ~"+miInfoTemp[2]+" ~ "+miInfoTemp[3];
+            myLocationDbHelper.updateInfo(idTemp,stringInfo);
+        }
+
+        //String stringInfo = ((String[])dicInfo.get(index))[0]+"~"
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

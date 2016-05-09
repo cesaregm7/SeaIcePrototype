@@ -14,12 +14,14 @@ public class LocationDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME_ID = "Id";
     public static final String COLUMN_NAME_LATITUD = "Latitud";
     public static final String COLUMN_NAME_LONGITUD = "Longitud";
+    public static final String COLUMN_NAME_INFO= "Info";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME_LATITUD + " REAL, " +
-                    COLUMN_NAME_LONGITUD + " REAL" +
+                    COLUMN_NAME_LONGITUD + " REAL," +
+                    COLUMN_NAME_INFO + " TEXT" +
                     " )";
 
     public LocationDbHelper(Context context) {
@@ -34,13 +36,34 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public long insertLocation(float longitud, float latitud)
+    public void updateInfo(int id, String info)
     {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_LATITUD, latitud);
-        values.put(COLUMN_NAME_LONGITUD, longitud);
+        values.put(COLUMN_NAME_INFO, info);
+
+        String where = COLUMN_NAME_ID + " = ?";
+
+        String whereArgs[] = {id+""};
+
+        int newRowId;
+        newRowId = db.update(
+                TABLE_NAME,
+                values,
+                where,
+                whereArgs);
+
+    }
+
+    public long insertLocation(double latitud, double longitud)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_LATITUD, (float)latitud);
+        values.put(COLUMN_NAME_LONGITUD, (float)longitud);
+        values.put(COLUMN_NAME_INFO, "");
 
         long newRowId;
         newRowId = db.insert(
@@ -73,7 +96,8 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         String[] projection = {
                 COLUMN_NAME_ID,
                 COLUMN_NAME_LATITUD,
-                COLUMN_NAME_LONGITUD
+                COLUMN_NAME_LONGITUD,
+                COLUMN_NAME_INFO
         };
 
 // How you want the results sorted in the resulting Cursor
@@ -90,4 +114,6 @@ public class LocationDbHelper extends SQLiteOpenHelper {
                 sortOrder                                 // The sort order
         );
     }
+
+
 }

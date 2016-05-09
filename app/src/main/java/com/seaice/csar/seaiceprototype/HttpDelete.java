@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * Created by PabloJavier on 23-Apr-16.
  */
-public class HttpManager extends AsyncTask<String, Void, String> {
+public class HttpDelete extends AsyncTask<String, Void, String> {
 
     //Activity where;
     boolean termine = false;
@@ -31,15 +31,14 @@ public class HttpManager extends AsyncTask<String, Void, String> {
         int status = -1;
         try
         {
-            String server_url = "http://seaice-jayala.rhcloud.com/setcoord";
+            String server_url = "http://seaice-jayala.rhcloud.com/delcoord";
             URL url = new URL(server_url);
             Map<String,Object> params = new LinkedHashMap<>();
 
             params.put("telefono", "+50230359588");
             //Datos del post
             params.put("id", parameters[0]);
-            params.put("lat", parameters[1]);
-            params.put("lng", parameters[2]);
+
 
             StringBuilder postData = new StringBuilder();
             for (Map.Entry<String,Object> param : params.entrySet()) {
