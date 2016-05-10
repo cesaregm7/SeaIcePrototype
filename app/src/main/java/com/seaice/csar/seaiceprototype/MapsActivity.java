@@ -25,6 +25,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -270,12 +272,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     latsMandar.add(latLng.latitude);
                     lngsMandar.add(latLng.longitude);
                 }
-                if (iBorrar) {
+                if (iReportar) {
                     DialogReport dr = new DialogReport();
                     dr.show(getFragmentManager(), "Report");
 
                     MarkerOptions options = new MarkerOptions();
                     options.position(latLng);
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     //options.
                     Marker marker = mMap.addMarker(options);
 
