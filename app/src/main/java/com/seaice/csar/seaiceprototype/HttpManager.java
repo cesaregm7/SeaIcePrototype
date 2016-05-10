@@ -24,6 +24,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
     //Activity where;
     boolean termine = false;
     String response;
+    MapsActivity ma;
 
     @Override
     protected String doInBackground(String... parameters) {
@@ -81,5 +82,11 @@ public class HttpManager extends AsyncTask<String, Void, String> {
         }
 
         return response;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        ma.postRequestNetwork(s);
     }
 }

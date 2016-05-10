@@ -480,11 +480,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         requestString = requestString.substring(0, requestString.length() - 1);
 
         HttpManager httpManager = new HttpManager();
+        httpManager.ma = this;
         httpManager.execute(telefono, requestString);
-        while(!httpManager.termine){}
+    }
 
+    protected void postRequestNetwork(String response)
+    {
         try {
-            JSONObject jo = new JSONObject(httpManager.response);
+            JSONObject jo = new JSONObject();
             JSONArray mensajes = jo.getJSONArray("mensaje");
             for(int i = 0; i < mensajes.length(); i++)
             {
@@ -493,10 +496,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        //TODO putDataMap
     }
+
 
     protected void sendRequest(){
         String requestString = "get:";
