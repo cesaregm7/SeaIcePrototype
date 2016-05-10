@@ -31,6 +31,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -160,7 +164,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     //DETERMINAR SI HAY WIFI
                     if(isNetworkAvailable())
                     {
-                        //
+                        sendRequestNetwork();
                     }
                     else
                     {
@@ -466,6 +470,34 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null;
     }
+
+    private void sendRequestNetwork() {
+        String telefono="+50230359588";
+        String requestString = "get:";
+        for (int localIdC : keyList){
+            requestString+=Integer.toString(localIdC)+",";
+        }
+        requestString = requestString.substring(0, requestString.length() - 1);
+
+        HttpManager httpManager = new HttpManager();
+        httpManager.execute(telefono, requestString);
+        while(!httpManager.termine){}
+
+        try {
+            JSONObject jo = new JSONObject(httpManager.response);
+            JSONArray mensajes = jo.getJSONArray("mensaje");
+            for(int i = 0; i < mensajes.length(); i++)
+            {
+                putDataMap(getString(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        //TODO putDataMap
+    }
+
     protected void sendRequest(){
         String requestString = "get:";
         for (int localIdC : keyList){
