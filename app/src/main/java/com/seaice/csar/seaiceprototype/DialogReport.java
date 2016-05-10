@@ -147,7 +147,7 @@ public class DialogReport extends DialogFragment {
         }
 
         void Sending(){
-            String iFileName = finalFile.getAbsolutePath();
+            String iFileName = finalFile.getName();
             String lineEnd = "\r\n";
             String twoHyphens = "--";
             String boundary = "*****";
@@ -168,43 +168,41 @@ public class DialogReport extends DialogFragment {
                 // Use a post method.
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Connection", "Keep-Alive");
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); //multipart/form-data
+                conn.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
                 DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
 
-                dos.writeBytes(lineEnd+lineEnd);
-                dos.writeBytes("telefono=+50230359588");
+                dos.writeBytes(twoHyphens+boundary+lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"telefono\"" + lineEnd);
                 dos.writeBytes(lineEnd);
-                //dos.writeBytes(Title);
-                //dos.writeBytes(lineEnd);
-                //dos.writeBytes(twoHyphens + boundary + lineEnd);
-                Log.e(Tag, "Bajo titulo");
-/*
+                dos.writeBytes("+50230359588");
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
+                dos.writeBytes("Content-Disposition: form-data; name=\"titulo\""+ lineEnd);
+                dos.writeBytes(lineEnd);
+                dos.writeBytes(Title);
+                dos.writeBytes(lineEnd);
+
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"descripcion\"" + lineEnd);
                 dos.writeBytes(lineEnd);
                 dos.writeBytes(Description);
                 dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                Log.e(Tag, "bajo description");
 
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"lat\"" + lineEnd);
                 dos.writeBytes(lineEnd);
                 dos.writeBytes("3.00");
                 dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
 
+                dos.writeBytes(twoHyphens + boundary + lineEnd);
                 dos.writeBytes("Content-Disposition: form-data; name=\"lng\"" + lineEnd);
                 dos.writeBytes(lineEnd);
                 dos.writeBytes("4.00");
                 dos.writeBytes(lineEnd);
+
+
                 dos.writeBytes(twoHyphens + boundary + lineEnd);
-
-                dos.writeBytes("Content-Disposition: form-data; name=\"telefono\"" + lineEnd);
-                dos.writeBytes(lineEnd);
-                dos.writeBytes("50230359588");
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-
-
                 dos.writeBytes("Content-Disposition: form-data; name=\"imagen\";filename=\"" + iFileName +"\"" + lineEnd);
                 dos.writeBytes(lineEnd);
 
@@ -232,7 +230,7 @@ public class DialogReport extends DialogFragment {
 
                 // close streams
                 fileInputStream.close();
-*/
+
                 dos.flush();
 
                 Log.e(Tag,"File Sent, Response: "+String.valueOf(conn.getResponseCode()));

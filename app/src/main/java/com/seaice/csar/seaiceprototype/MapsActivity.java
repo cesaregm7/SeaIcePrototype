@@ -47,6 +47,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     String prueba = "0^0^I saw a bear near this area^1^2.456,3.5546~1^0^Thin ice^1^2.456,3.5546~2^0^Blizzard^1^2.456,3.5546";
     boolean iRuta = false;
     boolean iBorrar = false;
+    boolean iReportar = false;
     Context ctx;
     ArrayList<Integer> keyList = new ArrayList<>();
     ArrayList<Integer> idsMandar = new ArrayList<>();
@@ -118,6 +119,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     iBorrar = false;
                     ll.removeAllViews();
                 }
+                //--------------------------Cerrar Reportar puntos --------------------
+                if(iReportar){
+                    iReportar = false;
+                    ll.removeAllViews();
+                }
 
             }
         });
@@ -174,8 +180,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
 
                 } else if (botonSeleccionado.equals("Report")) {
-                    DialogReport dr = new DialogReport();
-                    dr.show(getFragmentManager(), "Report");
+                    //-------Nuevo------
+                    iReportar = true;
+                    ll.addView(closeRoute);
 
                 }else if (botonSeleccionado.equals("Delete")) {
                     iBorrar = true;
@@ -264,6 +271,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     lngsMandar.add(latLng.longitude);
                 }
                 if (iBorrar) {
+                    DialogReport dr = new DialogReport();
+                    dr.show(getFragmentManager(), "Report");
+
+                    MarkerOptions options = new MarkerOptions();
+                    options.position(latLng);
+                    //options.
+                    Marker marker = mMap.addMarker(options);
+
+                    marker.showInfoWindow();
+
+
+
 
                 }
 
