@@ -463,7 +463,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             myLocationDbHelper.updateInfo(idTemp,stringInfo);
         }
 
+
         //String stringInfo = ((String[])dicInfo.get(index))[0]+"~"
+        updateMarkers();
     }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
