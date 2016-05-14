@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
@@ -517,6 +518,19 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             e.printStackTrace();
         }
 
+    }
+
+    public void updateMarkers()
+    {
+        Enumeration<Marker> e = dicMarker.elements();
+        while(e.hasMoreElements()){
+            Marker marker = (Marker) e.nextElement();
+            if(marker.isInfoWindowShown())
+            {
+                marker.hideInfoWindow();
+                marker.showInfoWindow();
+            }
+        }
     }
 
     public static MapsActivity getInstance()
