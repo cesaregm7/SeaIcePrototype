@@ -32,7 +32,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
         int status = -1;
         try
         {
-            String server_url = "http://seaice-jayala.rhcloud.com/getdata";
+            String server_url = "https://seaice-jayala.rhcloud.com/getdata";
             URL url = new URL(server_url);
             Map<String,Object> params = new LinkedHashMap<>();
 

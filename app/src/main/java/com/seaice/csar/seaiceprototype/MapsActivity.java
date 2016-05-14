@@ -489,7 +489,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     {
         try {
             JSONObject jo = new JSONObject();
-            JSONArray mensajes = jo.getJSONArray("mensaje");
+            JSONArray mensajes = jo.getJSONArray(response);
             for(int i = 0; i < mensajes.length(); i++)
             {
                 putDataMap(getString(i));
