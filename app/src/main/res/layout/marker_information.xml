@@ -13,7 +13,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_route_sign_48"/>
+            android:src="@drawable/ic_route_sign_48"
+            android:longClickable="false"
+            android:id="@+id/imageMarker" />
 
         <TextView
             android:id="@+id/titleMarker"
