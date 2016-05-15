@@ -293,7 +293,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     MarkerOptions options = new MarkerOptions();
 
                     options.position(latLng);
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
                     //options.
                     Marker marker = mMap.addMarker(options);
                     marker.showInfoWindow();
@@ -444,11 +444,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 //----------------------FALTA---------
                 LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
 
-                //Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + ""));
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 keyListRep.add(markersC.getInt(id));
-                //dicMarkRep.put(markersC.getInt(id), tempMarker);
+                dicMarkRep.put(markersC.getInt(id), tempMarker);
                 dicCoordRut.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
-                //dicInfRut.put(markersC.getInt(id), markersC.getString(miInfo).split("~"));
+                dicInfRut.put(markersC.getInt(id), new String[]{"","","",""});
             }
 
 
