@@ -10,27 +10,43 @@ public class LocationDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "StoredLocations.db";
-    public static final String TABLE_NAME = "Locations";
+
+    public static final String TABLE_NAME_LOCATIONS = "Locations";
+    public static final String TABLE_NAME_REPORTS = "Reports";
+
     public static final String COLUMN_NAME_ID = "Id";
     public static final String COLUMN_NAME_LATITUD = "Latitud";
     public static final String COLUMN_NAME_LONGITUD = "Longitud";
     public static final String COLUMN_NAME_INFO= "Info";
     public static final String COLUMN_NAME_TIPO= "Tipo";
 
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + TABLE_NAME + " (" +
+    public static final String COLUMN_NAME_TITULO= "Titulo";
+    public static final String COLUMN_NAME_DESCRIPCION= "Descripcion";
+    public static final String COLUMN_NAME_PATH= "Path";
+
+    private static final String SQL_CREATE_TABLE_LOCATIONS =
+            "CREATE TABLE " + TABLE_NAME_LOCATIONS + " (" +
                     COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME_LATITUD + " REAL, " +
                     COLUMN_NAME_LONGITUD + " REAL," +
                     COLUMN_NAME_INFO + " TEXT," +
-                    COLUMN_NAME_TIPO + " TIPO" +
+                    COLUMN_NAME_TIPO + " INTEGER" +
+                    " )";
+
+    private static final String SQL_CREATE_TABLE_REPORTS =
+            "CREATE TABLE " + TABLE_NAME_REPORTS + " (" +
+                    COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_NAME_TITULO + " TEXT, " +
+                    COLUMN_NAME_DESCRIPCION + " TEXT," +
+                    COLUMN_NAME_PATH + " TEXT" +
                     " )";
 
     public LocationDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_TABLE_LOCATIONS);
+        db.execSQL(SQL_CREATE_TABLE_REPORTS);
     }
 
     @Override
@@ -51,7 +67,29 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
         int newRowId;
         newRowId = db.update(
-                TABLE_NAME,
+                TABLE_NAME_LOCATIONS,
+                values,
+                where,
+                whereArgs);
+
+    }
+
+    public void updateReport(int id, String titulo, String descripcion, String path)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_TITULO, titulo);
+        values.put(COLUMN_NAME_DESCRIPCION, descripcion);
+        values.put(COLUMN_NAME_PATH, path);
+
+        String where = COLUMN_NAME_ID + " = ?";
+
+        String whereArgs[] = {id+""};
+
+        int newRowId;
+        newRowId = db.update(
+                TABLE_NAME_REPORTS,
                 values,
                 where,
                 whereArgs);
@@ -70,7 +108,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
         long newRowId;
         newRowId = db.insert(
-                TABLE_NAME,
+                TABLE_NAME_LOCATIONS,
                 null,
                 values);
 
@@ -86,9 +124,20 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 // Specify arguments in placeholder order.
         String[] selectionArgs = { String.valueOf(id) };
 // Issue SQL statement.
-        return db.delete(TABLE_NAME, selection, selectionArgs) > 0;
+        return db.delete(TABLE_NAME_LOCATIONS, selection, selectionArgs) > 0;
     }
 
+    public boolean deleteReport(long id)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Define 'where' part of query.
+        String selection = COLUMN_NAME_ID + " = ?";
+// Specify arguments in placeholder order.
+        String[] selectionArgs = { String.valueOf(id) };
+// Issue SQL statement.
+        return db.delete(TABLE_NAME_REPORTS, selection, selectionArgs) > 0;
+    }
 
     public Cursor readAllLocation()
     {
@@ -109,7 +158,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
                 COLUMN_NAME_ID + " ASC";
 
         return db.query(
-                TABLE_NAME,  // The table to query
+                TABLE_NAME_LOCATIONS,  // The table to query
                 projection,                               // The columns to return
                 null,                                // The columns for the WHERE clause
                 null,                            // The values for the WHERE clause
