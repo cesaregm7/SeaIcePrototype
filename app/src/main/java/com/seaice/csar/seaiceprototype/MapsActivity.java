@@ -240,12 +240,24 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     }
                 }
 
+                indiceMarker = -1;
+
                 /*----------------Marcadores de Reporte FALTA-----------------------*/
                 for (int i = 0; i < keyListRep.size(); i++) {
                     coordTemp = (double[]) dicCoordRep.get(keyListRep.get(i));
                     if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
                         indiceMarker = keyListRep.get(i);
                     }
+                }
+
+                if (!(indiceMarker == -1)) {
+                    String[] infoTemp = (String[]) dicInfRep.get(indiceMarker);
+                    TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
+                    titulo.setText("Titulo: " + infoTemp[0]);
+                    TextView contenido = (TextView) v.findViewById(R.id.latitudMarker);
+                    contenido.setText("Contenido: " + infoTemp[1]);
+                    ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
+                    //imagenMarker.
                 }
 
                 /*TextView latitud = (TextView) v.findViewById(R.id.latitudMarker);
