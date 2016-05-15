@@ -59,6 +59,7 @@ public class DialogReport extends DialogFragment {
     public Uri tempUri;
     public File finalFile ;
     public HttpFileUpload hfu;
+    public boolean enviado = false;
 
     @SuppressLint("ValidFragment")
     public DialogReport(Marker marker){
@@ -82,6 +83,7 @@ public class DialogReport extends DialogFragment {
             @Override
             public void onClick(View v) {
                 UploadFile(titulo.getText().toString(),descripcion.getText().toString());
+                enviado = true;
                 builder.dismiss();
             }
         });

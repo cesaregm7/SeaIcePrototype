@@ -247,6 +247,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 }
 
                 /*----------------Marcadores de Reporte FALTA-----------------------*/
+                for (int i = 0; i < keyListRep.size(); i++) {
+                    coordTemp = (double[]) dicCoordRep.get(keyListRep.get(i));
+                    if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
+                        indiceMarker = keyListRep.get(i);
+                    }
+                }
 
                 /*TextView latitud = (TextView) v.findViewById(R.id.latitudMarker);
                 latitud.setText("Latitud: " + latLng.latitude);
@@ -299,7 +305,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     marker.showInfoWindow();
                     DialogReport dr = new DialogReport(marker);
                     dr.show(getFragmentManager(), "Report");
+                    while(!dr.enviado){
 
+                    }
                     indiceActual = (int) myLocationDbHelper.insertFullReport(latLng.latitude, latLng.longitude, dr.hfu.Title, dr.hfu.Description, dr.finalFile.getAbsolutePath());
 
 
