@@ -413,7 +413,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             keyList.add(markersC.getInt(id));
             dicMarker.put(markersC.getInt(id), tempMarker);
             dicCoordenadas.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
-            Toast.makeText(MapsActivity.this, markersC.getString(miInfo), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MapsActivity.this, markersC.getString(miInfo), Toast.LENGTH_SHORT).show();
             dicInfo.put(markersC.getInt(id), markersC.getString(miInfo).split("~"));
 
 
