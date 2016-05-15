@@ -65,7 +65,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     ArrayList<Double> latsMandar = new ArrayList<>();
     ArrayList<Double> lngsMandar = new ArrayList<>();
     private static MapsActivity mapsAct;
-    private LocationDbHelper myLocationDbHelper = new LocationDbHelper(this);
+    public LocationDbHelper myLocationDbHelper = new LocationDbHelper(this);
 
     int indiceActual = 2;
 
@@ -303,12 +303,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     //options.
                     Marker marker = mMap.addMarker(options);
                     marker.showInfoWindow();
-                    DialogReport dr = new DialogReport(marker);
+                    DialogReport dr = new DialogReport(marker, latLng.latitude, latLng.longitude);
                     dr.show(getFragmentManager(), "Report");
-                    while(!dr.enviado){
 
-                    }
-                    indiceActual = (int) myLocationDbHelper.insertFullReport(latLng.latitude, latLng.longitude, dr.hfu.Title, dr.hfu.Description, dr.finalFile.getAbsolutePath());
+                    //indiceActual = (int) myLocationDbHelper.insertFullReport(latLng.latitude, latLng.longitude, dr.hfu.Title, dr.hfu.Description, dr.finalFile.getAbsolutePath());
 
 
 

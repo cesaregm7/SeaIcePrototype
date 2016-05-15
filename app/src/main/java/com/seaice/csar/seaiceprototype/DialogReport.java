@@ -55,15 +55,19 @@ public class DialogReport extends DialogFragment {
     private ImageView imagev;
     private Bitmap photo;
     private Marker marker;
+    private double latitude;
+    private double longitude;
     public AlertDialog builder;
     public Uri tempUri;
     public File finalFile ;
     public HttpFileUpload hfu;
-    public boolean enviado = false;
 
     @SuppressLint("ValidFragment")
-    public DialogReport(Marker marker){
+    public DialogReport(Marker marker, double latitude, double longitude){
+
         this.marker = marker;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override
@@ -83,7 +87,7 @@ public class DialogReport extends DialogFragment {
             @Override
             public void onClick(View v) {
                 UploadFile(titulo.getText().toString(),descripcion.getText().toString());
-                enviado = true;
+                MapsActivity.getInstance().indiceActual = (int) MapsActivity.getInstance().myLocationDbHelper.insertFullReport(latitude, longitude, hfu.Title, hfu.Description, finalFile.getAbsolutePath());
                 builder.dismiss();
             }
         });
