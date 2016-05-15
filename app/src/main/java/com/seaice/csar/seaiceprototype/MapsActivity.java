@@ -51,7 +51,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     Dictionary dicCoordenadas = new Hashtable();
     Dictionary dicInfo = new Hashtable();
     Dictionary dicMarker = new Hashtable();
-    String prueba = "0^0^I saw a bear near this area^1^2.456,3.5546~1^0^Thin ice^1^2.456,3.5546~2^0^Blizzard^1^2.456,3.5546";
     boolean iRuta = false;
     boolean iBorrar = false;
     boolean iReportar = false;
@@ -278,16 +277,16 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     lngsMandar.add(latLng.longitude);
                 }
                 if (iReportar) {
-                    DialogReport dr = new DialogReport();
-                    dr.show(getFragmentManager(), "Report");
 
                     MarkerOptions options = new MarkerOptions();
                     options.position(latLng);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     //options.
                     Marker marker = mMap.addMarker(options);
-
                     marker.showInfoWindow();
+                    DialogReport dr = new DialogReport(marker);
+                    dr.show(getFragmentManager(), "Report");
+
 
 
 
