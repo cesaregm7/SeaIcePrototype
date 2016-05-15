@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -251,7 +252,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 latitud.setText("Latitud: " + latLng.latitude);
 
                 TextView longitud = (TextView) v.findViewById(R.id.longitudMarker);
-                longitud.setText("Longitud: " + latLng.longitude);*/
+                longitud.setText("Longitud: " + latLng.longitude);
+
+                ImageView imagen = (ImageView) v.findViewById(R.id.imageMarker);
+
+                TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
+
+                TextView descripcion = (TextView) v.findViewById(R.id.textoMarker);*/
 
                 return v;
             }
