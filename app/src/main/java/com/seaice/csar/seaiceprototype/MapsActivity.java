@@ -526,11 +526,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     protected void postRequestNetwork(String response)
     {
         try {
-            JSONObject jo = new JSONObject();
-            JSONArray mensajes = jo.getJSONArray(response);
+            JSONObject jo = new JSONObject(response);
+            JSONArray mensajes = new JSONArray(jo.getString("mensaje"));
             for(int i = 0; i < mensajes.length(); i++)
             {
-                putDataMap(getString(i));
+                putDataMap(mensajes.getString(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();
