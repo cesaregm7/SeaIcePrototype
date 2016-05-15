@@ -55,9 +55,10 @@ public class DialogReport extends DialogFragment {
     private ImageView imagev;
     private Bitmap photo;
     private Marker marker;
-    AlertDialog builder;
-    Uri tempUri;
-    File finalFile ;
+    public AlertDialog builder;
+    public Uri tempUri;
+    public File finalFile ;
+    public HttpFileUpload hfu;
 
     @SuppressLint("ValidFragment")
     public DialogReport(Marker marker){
@@ -115,7 +116,7 @@ public class DialogReport extends DialogFragment {
             FileInputStream fstrm = new FileInputStream(finalFile.getAbsolutePath());
 
             // Set your server page url (and the file title/description)
-            HttpFileUpload hfu = new HttpFileUpload("https://seaice-jayala.rhcloud.com/sendreport", titulo,descripcion);
+            hfu = new HttpFileUpload("https://seaice-jayala.rhcloud.com/sendreport", titulo,descripcion);
 
             hfu.Send_Now(fstrm);
 
@@ -125,12 +126,12 @@ public class DialogReport extends DialogFragment {
     }
 
     public class HttpFileUpload implements Runnable{
-        URL connectURL;
-        String Title;
-        String Description;
-        FileInputStream fileInputStream = null;
+        public URL connectURL;
+        public String Title;
+        public String Description;
+        public FileInputStream fileInputStream = null;
 
-        HttpFileUpload(String urlString, String vTitle, String vDesc){
+        public HttpFileUpload(String urlString, String vTitle, String vDesc){
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
             try{
