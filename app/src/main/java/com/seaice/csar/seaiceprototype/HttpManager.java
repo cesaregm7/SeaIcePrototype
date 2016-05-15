@@ -23,7 +23,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
 
     //Activity where;
     boolean termine = false;
-    String response;
+    String response,response1;
     MapsActivity ma;
 
     @Override
@@ -78,9 +78,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
             StringBuilder resGet = new StringBuilder();
             URL url1 = new URL(server_url1);
 
-            System.out.println("El GET");
             HttpURLConnection conne = (HttpURLConnection)url1.openConnection();
-            conne.setRequestMethod("GET");
 
             BufferedReader rd = new BufferedReader(new InputStreamReader(conne.getInputStream()));
             String line;
@@ -89,7 +87,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
             }
             rd.close();
 
-            String response1 = new String(resGet.toString());
+            response1 = new String(resGet.toString());
             System.out.println("El GET2");
             Log.v("Response PRE", response1);
             termine = true;
@@ -102,7 +100,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
             Log.e("MainActivity", "Exception Dummy", e);
         }
 
-        return response;
+        return "["+response+","+response1+"]";
     }
 
     @Override
