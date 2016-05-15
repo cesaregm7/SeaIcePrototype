@@ -258,8 +258,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     //mMap.clear();
                     MarkerOptions options = new MarkerOptions();
 
+                    //TODO revisar el tipo aca
+                    int tipo = 0;
 
-                    indiceActual = (int) myLocationDbHelper.insertLocation(latLng.latitude, latLng.longitude);
+                    if(iReportar)
+                    {
+                        tipo = 1;
+                    }
+                    if(iRuta)
+                    {
+                        tipo = 2;
+                    }
+                    indiceActual = (int) myLocationDbHelper.insertLocation(latLng.latitude, latLng.longitude, tipo);
                     myLocationDbHelper.updateInfo(indiceActual," ~ ~ ~ ");
                     options.position(latLng);
                     options.title(indiceActual+"");

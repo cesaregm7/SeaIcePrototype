@@ -15,13 +15,15 @@ public class LocationDbHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NAME_LATITUD = "Latitud";
     public static final String COLUMN_NAME_LONGITUD = "Longitud";
     public static final String COLUMN_NAME_INFO= "Info";
+    public static final String COLUMN_NAME_TIPO= "Tipo";
 
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME_LATITUD + " REAL, " +
                     COLUMN_NAME_LONGITUD + " REAL," +
-                    COLUMN_NAME_INFO + " TEXT" +
+                    COLUMN_NAME_INFO + " TEXT," +
+                    COLUMN_NAME_TIPO + " TIPO" +
                     " )";
 
     public LocationDbHelper(Context context) {
@@ -56,7 +58,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public long insertLocation(double latitud, double longitud)
+    public long insertLocation(double latitud, double longitud, int tipo)
     {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -64,6 +66,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NAME_LATITUD, (float)latitud);
         values.put(COLUMN_NAME_LONGITUD, (float)longitud);
         values.put(COLUMN_NAME_INFO, "");
+        values.put(COLUMN_NAME_TIPO, tipo);
 
         long newRowId;
         newRowId = db.insert(
@@ -97,7 +100,8 @@ public class LocationDbHelper extends SQLiteOpenHelper {
                 COLUMN_NAME_ID,
                 COLUMN_NAME_LATITUD,
                 COLUMN_NAME_LONGITUD,
-                COLUMN_NAME_INFO
+                COLUMN_NAME_INFO,
+                COLUMN_NAME_TIPO
         };
 
 // How you want the results sorted in the resulting Cursor
