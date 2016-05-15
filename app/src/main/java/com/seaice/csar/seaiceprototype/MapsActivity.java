@@ -48,14 +48,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     private GoogleMap mMap;
     ProtocolParser miProtocolo = new ProtocolParser();
     ArrayList<ProtocolParser.Information> informacion;
-    Dictionary dicCoordenadas = new Hashtable();
-    Dictionary dicInfo = new Hashtable();
-    Dictionary dicMarker = new Hashtable();
+    Dictionary dicCoordRut = new Hashtable();
+    Dictionary dicInfRut = new Hashtable();
+    Dictionary dicMarkRut= new Hashtable();
+    Dictionary dicCoordRep = new Hashtable();
+    Dictionary dicInfRep = new Hashtable();
+    Dictionary dicMarkRep = new Hashtable();
     boolean iRuta = false;
     boolean iBorrar = false;
     boolean iReportar = false;
     Context ctx;
-    ArrayList<Integer> keyList = new ArrayList<>();
+    ArrayList<Integer> keyListRut = new ArrayList<>();
+    ArrayList<Integer> keyListRep = new ArrayList<>();
     ArrayList<Integer> idsMandar = new ArrayList<>();
     ArrayList<Double> latsMandar = new ArrayList<>();
     ArrayList<Double> lngsMandar = new ArrayList<>();
@@ -208,18 +212,19 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             public View getInfoContents(Marker marker) {
                 View v = getLayoutInflater().inflate(R.layout.marker_information, null);
 
+                /*---------------Marcadores de Ruta--------------------*/
                 LatLng latLng = marker.getPosition();
                 double[] coordTemp;
                 int indiceMarker = -1;
-                for (int i = 0; i < keyList.size(); i++) {
-                    coordTemp = (double[]) dicCoordenadas.get(keyList.get(i));
+                for (int i = 0; i < keyListRut.size(); i++) {
+                    coordTemp = (double[]) dicCoordRut.get(keyListRut.get(i));
                     if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
-                        indiceMarker = keyList.get(i);
+                        indiceMarker = keyListRut.get(i);
                     }
                 }
 
                 if (!(indiceMarker == -1)) {
-                    String[] infoTemp = (String[]) dicInfo.get(indiceMarker);
+                    String[] infoTemp = (String[]) dicInfRut.get(indiceMarker);
                     if (!infoTemp[0].equals("")) {
                         TextView temperatura = (TextView) v.findViewById(R.id.temperaturaMarker);
                         temperatura.setText("Weather: " + infoTemp[0]);
@@ -240,6 +245,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     }
                 }
 
+                /*----------------Marcadores de Reporte FALTA-----------------------*/
 
                 /*TextView latitud = (TextView) v.findViewById(R.id.latitudMarker);
                 latitud.setText("Latitud: " + latLng.latitude);
@@ -258,17 +264,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     //mMap.clear();
                     MarkerOptions options = new MarkerOptions();
 
-                    //TODO revisar el tipo aca
-                    int tipo = 0;
-
-                    if(iReportar)
-                    {
-                        tipo = 1;
-                    }
-                    if(iRuta)
-                    {
-                        tipo = 2;
-                    }
                     indiceActual = (int) myLocationDbHelper.insertFullLocation(latLng.latitude, latLng.longitude);
                     myLocationDbHelper.updateInfo(indiceActual," ~ ~ ~ ");
                     options.position(latLng);
@@ -277,18 +272,19 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     Marker marker = mMap.addMarker(options);
                     marker.showInfoWindow();
 
-                    keyList.add(indiceActual);
-                    dicCoordenadas.put(indiceActual, new double[]{latLng.latitude, latLng.longitude});
-                    dicInfo.put(indiceActual, new String[]{"", "", "", ""});
-                    dicMarker.put(indiceActual, marker);
+                    keyListRut.add(indiceActual);
+                    dicCoordRut.put(indiceActual, new double[]{latLng.latitude, latLng.longitude});
+                    dicInfRut.put(indiceActual, new String[]{"", "", "", ""});
+                    dicMarkRut.put(indiceActual, marker);
                     //---------------Agregar Puntos a Listas-------------------
                     idsMandar.add(indiceActual);
                     latsMandar.add(latLng.latitude);
                     lngsMandar.add(latLng.longitude);
                 }
                 if (iReportar) {
-
+                    //------------------FALTA
                     MarkerOptions options = new MarkerOptions();
+
                     options.position(latLng);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                     //options.
@@ -297,6 +293,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     DialogReport dr = new DialogReport(marker);
                     dr.show(getFragmentManager(), "Report");
 
+                    indiceActual = (int) myLocationDbHelper.insertFullReport(latLng.latitude, latLng.longitude, dr.hfu.Title, dr.hfu.Description, dr.finalFile.getAbsolutePath());
 
 
 
@@ -317,12 +314,22 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     final int id = Integer.parseInt(marker.getTitle());
                     marker.remove();
 
-                    keyList.remove(keyList.indexOf(id));
-                    dicCoordenadas.remove(id);
-                    dicInfo.remove(id);
-                    dicMarker.remove(id);
-                    myLocationDbHelper.deleteLocation(id);
-
+                    int indexTemp = keyListRut.indexOf(id);
+                    if(indexTemp==-1){
+                        indexTemp = keyListRep.indexOf(id);
+                        keyListRep.remove(indexTemp);
+                        dicCoordRep.remove(indexTemp);
+                        dicInfRep.remove(indexTemp);
+                        myLocationDbHelper.deleteReport(id);
+                    }
+                    else{
+                        keyListRut.remove(indexTemp);
+                        dicCoordRut.remove(id);
+                        dicInfRut.remove(id);
+                        dicMarkRut.remove(id);
+                        myLocationDbHelper.deleteLocation(id);
+                    }
+                    //---------------------FALTA
                     new HttpDelete().execute(id + "");
 /*
                     Thread thread = new Thread(new Runnable() {
@@ -412,19 +419,32 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             int lng = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_LONGITUD);
             int id = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_ID);
             int miInfo = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_INFO);
-
-            LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
-
-            //Toast.makeText(MapsActivity.this, "lat:"+markersC.getFloat(lat)+",lng:"+markersC.getFloat(lng), Toast.LENGTH_SHORT).show();
-
-            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + ""));
+            int miTipo = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_TIPO);
 
 
-            keyList.add(markersC.getInt(id));
-            dicMarker.put(markersC.getInt(id), tempMarker);
-            dicCoordenadas.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
-            //Toast.makeText(MapsActivity.this, markersC.getString(miInfo), Toast.LENGTH_SHORT).show();
-            dicInfo.put(markersC.getInt(id), markersC.getString(miInfo).split("~"));
+
+
+            if(markersC.getInt(miTipo)==-1){
+                LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
+
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + ""));
+                keyListRut.add(markersC.getInt(id));
+                dicMarkRut.put(markersC.getInt(id), tempMarker);
+                dicCoordRut.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
+                dicInfRut.put(markersC.getInt(id), markersC.getString(miInfo).split("~"));
+            }
+            else{
+                //----------------------FALTA---------
+                LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
+
+                //Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + ""));
+                keyListRep.add(markersC.getInt(id));
+                //dicMarkRep.put(markersC.getInt(id), tempMarker);
+                dicCoordRut.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
+                //dicInfRut.put(markersC.getInt(id), markersC.getString(miInfo).split("~"));
+            }
+
+
 
 
         }
@@ -451,23 +471,23 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         for(int i=0;i<informacion.size();i++){
             System.out.println(informacion.get(i).type);
             index = informacion.get(i).id;
-            coordenadas = (double[]) dicCoordenadas.get(index);
+            coordenadas = (double[]) dicCoordRut.get(index);
             if(informacion.get(i).type==0){
-                ((String[])dicInfo.get(index))[3] = informacion.get(i).text;
+                ((String[])dicInfRut.get(index))[3] = informacion.get(i).text;
             }
             else if(informacion.get(i).type==1){
-                ((String[])dicInfo.get(index))[1] = informacion.get(i).number+" "+informacion.get(i).direction;
+                ((String[])dicInfRut.get(index))[1] = informacion.get(i).number+" "+informacion.get(i).direction;
             }
             else if(informacion.get(i).type==2){
-                ((String[])dicInfo.get(index))[0] = informacion.get(i).number+"";
+                ((String[])dicInfRut.get(index))[0] = informacion.get(i).number+"";
             }
             else{
-                ((String[])dicInfo.get(index))[2] = informacion.get(i).number+"";
+                ((String[])dicInfRut.get(index))[2] = informacion.get(i).number+"";
             }
         }
 
-        for(int idTemp:keyList){
-            String[] miInfoTemp = (String[])dicInfo.get(idTemp);
+        for(int idTemp:keyListRut){
+            String[] miInfoTemp = (String[])dicInfRut.get(idTemp);
             String stringInfo = miInfoTemp[0]+" ~"+miInfoTemp[1]+" ~"+miInfoTemp[2]+" ~ "+miInfoTemp[3];
             myLocationDbHelper.updateInfo(idTemp,stringInfo);
         }
@@ -486,7 +506,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     private void sendRequestNetwork() {
         String telefono="+50230359588";
         String requestString = "get:";
-        for (int localIdC : keyList){
+        for (int localIdC : keyListRut){
             requestString+=Integer.toString(localIdC)+",";
         }
         requestString = requestString.substring(0, requestString.length() - 1);
@@ -513,7 +533,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
     protected void sendRequest(){
         String requestString = "get:";
-        for (int localIdC : keyList){
+        for (int localIdC : keyListRut){
             requestString+=Integer.toString(localIdC)+",";
         }
         requestString = requestString.substring(0, requestString.length() - 1);
@@ -533,7 +553,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
     public void updateMarkers()
     {
-        Enumeration<Marker> e = dicMarker.elements();
+        Enumeration<Marker> e = dicMarkRut.elements();
         while(e.hasMoreElements()){
             Marker marker = (Marker) e.nextElement();
             if(marker.isInfoWindowShown())
