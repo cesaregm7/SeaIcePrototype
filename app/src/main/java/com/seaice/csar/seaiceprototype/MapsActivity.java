@@ -534,6 +534,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 putDataMap(mensajes.getString(i));
             }
             JSONArray jsonReport = new JSONArray(responses.getJSONObject(1));
+            updateMarkerInfoHTTP(jsonReport);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -569,6 +570,33 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             {
                 marker.hideInfoWindow();
                 marker.showInfoWindow();
+            }
+        }
+    }
+
+    public void updateMarkerInfoHTTP(JSONArray markerInfo) throws JSONException {
+        int idTemp;
+        for(int i = 0; i < markerInfo.length(); i++)
+        {
+            JSONObject jo = markerInfo.getJSONObject(i);
+            idTemp = jo.getInt("reporteid");
+            if(keyListRep.contains(idTemp)){
+                ((String[])dicInfRep.get(idTemp))[0] = jo.getString("titulo");
+                ((String[])dicInfRep.get(idTemp))[1] = jo.getString("detalle");
+                ((String[])dicInfRep.get(idTemp))[2] = jo.getString("path");
+
+                myLocationDbHelper.updateReport(idTemp, jo.getString("titulo"), jo.getString("detalle"), jo.getString("path"));
+            }
+            else{
+                LatLng newMarker = new LatLng(jo.getDouble("lat"),jo.getDouble("lng"));
+
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(jo.getInt("reporteid") + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                keyListRep.add(jo.getInt("reporteid"));
+                dicMarkRep.put(jo.getInt("reporteid"), tempMarker);
+                dicCoordRep.put(jo.getInt("reporteid"), new double[]{jo.getDouble("lat"), jo.getDouble("lng")});
+                dicInfRep.put(jo.getInt("reporteid"), new String[]{jo.getString("titulo"),jo.getString("detalle"),jo.getString("path")});
+
+                myLocationDbHelper.insertFullReport(jo.getDouble("lat"), jo.getDouble("lng"),jo.getString("titulo"),jo.getString("detalle"),jo.getString("path"));
             }
         }
     }
