@@ -130,11 +130,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     iBorrar = false;
                     ll.removeAllViews();
                 }
-                //--------------------------Cerrar Reportar puntos --------------------
-                if(iReportar){
-                    iReportar = false;
-                    ll.removeAllViews();
-                }
 
             }
         });
@@ -193,7 +188,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 } else if (botonSeleccionado.equals("Report")) {
                     //-------Nuevo------
                     iReportar = true;
-                    ll.addView(closeRoute);
 
                 }else if (botonSeleccionado.equals("Delete")) {
                     iBorrar = true;

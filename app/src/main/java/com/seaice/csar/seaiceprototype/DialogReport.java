@@ -89,6 +89,7 @@ public class DialogReport extends DialogFragment {
             public void onClick(View v) {
                 UploadFile(titulo.getText().toString(),descripcion.getText().toString());
                 indiceActual = (int) MapsActivity.getInstance().myLocationDbHelper.insertFullReport(latitude, longitude, hfu.Title, hfu.Description, finalFile.getAbsolutePath());
+                MapsActivity.getInstance().iReportar = false;
                 builder.dismiss();
             }
         });
