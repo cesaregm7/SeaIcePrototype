@@ -533,7 +533,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             {
                 putDataMap(mensajes.getString(i));
             }
-            JSONArray jsonReport = new JSONArray(responses.getJSONObject(1));
+            JSONArray jsonReport = responses.getJSONArray(1);
             updateMarkerInfoHTTP(jsonReport);
         } catch (JSONException e) {
             e.printStackTrace();
