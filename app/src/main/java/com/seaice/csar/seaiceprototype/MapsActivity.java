@@ -269,7 +269,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     {
                         tipo = 2;
                     }
-                    indiceActual = (int) myLocationDbHelper.insertLocation(latLng.latitude, latLng.longitude, tipo);
+                    indiceActual = (int) myLocationDbHelper.insertFullLocation(latLng.latitude, latLng.longitude);
                     myLocationDbHelper.updateInfo(indiceActual," ~ ~ ~ ");
                     options.position(latLng);
                     options.title(indiceActual+"");

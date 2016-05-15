@@ -96,7 +96,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public long insertReport(String titulo, String descripcion, String path)
+    private long insertReport(String titulo, String descripcion, String path)
     {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -114,7 +114,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public long insertLocation(double latitud, double longitud, int tipo)
+    private long insertLocation(double latitud, double longitud, long tipo)
     {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -131,6 +131,17 @@ public class LocationDbHelper extends SQLiteOpenHelper {
                 values);
 
         return newRowId;
+    }
+
+    public long insertFullLocation(double latitud, double longitud)
+    {
+        return insertLocation(latitud,longitud,-1);
+    }
+
+    public long insertFullReport(double latitud, double longitud,String titulo, String descripcion, String path)
+    {
+        long tipo = insertReport(titulo, descripcion, path);
+        return insertLocation(latitud,longitud, tipo);
     }
 
     public boolean deleteLocation(long id)
