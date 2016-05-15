@@ -57,6 +57,7 @@ public class DialogReport extends DialogFragment {
     private Marker marker;
     private double latitude;
     private double longitude;
+    private int indiceActual;
     public AlertDialog builder;
     public Uri tempUri;
     public File finalFile ;
@@ -87,7 +88,7 @@ public class DialogReport extends DialogFragment {
             @Override
             public void onClick(View v) {
                 UploadFile(titulo.getText().toString(),descripcion.getText().toString());
-                MapsActivity.getInstance().indiceActual = (int) MapsActivity.getInstance().myLocationDbHelper.insertFullReport(latitude, longitude, hfu.Title, hfu.Description, finalFile.getAbsolutePath());
+                indiceActual = (int) MapsActivity.getInstance().myLocationDbHelper.insertFullReport(latitude, longitude, hfu.Title, hfu.Description, finalFile.getAbsolutePath());
                 builder.dismiss();
             }
         });
