@@ -96,6 +96,24 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     }
 
+    public long insertReport(String titulo, String descripcion, String path)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_TITULO, titulo);
+        values.put(COLUMN_NAME_DESCRIPCION, descripcion);
+        values.put(COLUMN_NAME_PATH, path);
+
+        long newRowId;
+        newRowId = db.insert(
+                TABLE_NAME_REPORTS,
+                null,
+                values);
+
+        return newRowId;
+    }
+
     public long insertLocation(double latitud, double longitud, int tipo)
     {
         SQLiteDatabase db = getWritableDatabase();
