@@ -70,48 +70,27 @@ public class HttpManager extends AsyncTask<String, Void, String> {
 
             response = new String(bos.toByteArray());
 
-            Log.v("Response PRE", response);
+            //Log.v("Response PRE", response);
             termine = true;
 
             //EMPIEZA AQUI!
             String server_url1 = "https://seaice-jayala.rhcloud.com/getreportes";
-            URL url1 = new URL(server_url);
-            Map<String,Object> params1 = new LinkedHashMap<>();
+            StringBuilder resGet = new StringBuilder();
+            URL url1 = new URL(server_url1);
 
-            //Datos del post
-            //params.put("telefono", parameters[0]);
-            //params.put("mensaje", parameters[1]);
-
-            //StringBuilder postData1 = new StringBuilder();
-            //for (Map.Entry<String,Object> param : params.entrySet()) {
-            //    if (postData.length() != 0) postData.append('&');
-            //    postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-            //    postData.append('=');
-            //    postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
-            //}
-            //byte[] postDataBytes = postData.toString().getBytes("UTF-8");
-
-            //Log.v("Response sent", postData.toString());
-
-            HttpURLConnection conne = (HttpURLConnection)url.openConnection();
+            System.out.println("El GET");
+            HttpURLConnection conne = (HttpURLConnection)url1.openConnection();
             conne.setRequestMethod("GET");
-            //conne.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            //conne.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
-            conne.setDoOutput(true);
-            //conne.getOutputStream().write(postDataBytes);
 
-            status = conn.getResponseCode();
-            InputStream in1 = conn.getInputStream();
-
-            int len1;
-            byte[] buffer1 = new byte[4096];
-            ByteArrayOutputStream bos1 = new ByteArrayOutputStream();
-            while (-1 != (len1 = in1.read(buffer1))) {
-                bos1.write(buffer1, 0, len1);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(conne.getInputStream()));
+            String line;
+            while ((line = rd.readLine()) != null) {
+                resGet.append(line);
             }
+            rd.close();
 
-            String response1 = new String(bos1.toByteArray());
-
+            String response1 = new String(resGet.toString());
+            System.out.println("El GET2");
             Log.v("Response PRE", response1);
             termine = true;
 
