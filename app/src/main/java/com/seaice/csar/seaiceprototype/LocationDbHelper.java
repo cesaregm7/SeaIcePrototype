@@ -168,6 +168,38 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME_REPORTS, selection, selectionArgs) > 0;
     }
 
+    public Cursor readSingleReport(long id)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                COLUMN_NAME_ID,
+                COLUMN_NAME_TITULO,
+                COLUMN_NAME_DESCRIPCION,
+                COLUMN_NAME_PATH
+        };
+
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                COLUMN_NAME_ID + " ASC";
+
+        String selection = COLUMN_NAME_ID + " = ?";
+// Specify arguments in placeholder order.
+        String[] selectionArgs = { String.valueOf(id) };
+
+        return db.query(
+                TABLE_NAME_LOCATIONS,  // The table to query
+                projection,                               // The columns to return
+                selection,                                // The columns for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
+    }
+
     public Cursor readAllLocation()
     {
         SQLiteDatabase db = getReadableDatabase();
@@ -196,6 +228,4 @@ public class LocationDbHelper extends SQLiteOpenHelper {
                 sortOrder                                 // The sort order
         );
     }
-
-
 }
