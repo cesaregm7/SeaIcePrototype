@@ -303,7 +303,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 if (iReportar) {
                     //------------------FALTA
                     MarkerOptions options = new MarkerOptions();
-
                     options.position(latLng);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
                     //options.
@@ -593,9 +592,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             JSONObject jo = markerInfo.getJSONObject(i);
             idTemp = jo.getInt("reporteid");
             if(keyListRep.contains(idTemp)){
-                ((String[])dicInfRep.get(idTemp))[0] = jo.getString("titulo");
+                /*((String[])dicInfRep.get(idTemp))[0] = jo.getString("titulo");
                 ((String[])dicInfRep.get(idTemp))[1] = jo.getString("detalle");
-                ((String[])dicInfRep.get(idTemp))[2] = jo.getString("path");
+                ((String[])dicInfRep.get(idTemp))[2] = jo.getString("path");*/
+                dicInfRep.put(idTemp, new String[]{jo.getString("titulo"),jo.getString("detalle"),jo.getString("path")});
 
                 myLocationDbHelper.updateReport(idTemp, jo.getString("titulo"), jo.getString("detalle"), jo.getString("path"));
             }
