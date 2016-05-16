@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class LocationDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
@@ -141,6 +142,10 @@ public class LocationDbHelper extends SQLiteOpenHelper {
     public long insertFullReport(double latitud, double longitud,String titulo, String descripcion, String path)
     {
         long tipo = insertReport(titulo, descripcion, path);
+        if(tipo < 0)
+        {
+            Log.e("ERROR Tipo:","tipo: "+tipo);
+        }
         return insertLocation(latitud,longitud, tipo);
     }
 
