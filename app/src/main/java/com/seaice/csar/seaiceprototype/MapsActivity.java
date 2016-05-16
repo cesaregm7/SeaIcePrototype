@@ -210,55 +210,60 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 /*---------------Marcadores de Ruta--------------------*/
                 LatLng latLng = marker.getPosition();
                 double[] coordTemp;
-                int indiceMarker = -1;
-                for (int i = 0; i < keyListRut.size(); i++) {
-                    coordTemp = (double[]) dicCoordRut.get(keyListRut.get(i));
-                    if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
-                        indiceMarker = keyListRut.get(i);
+                if(marker.getTitle().equals("-1")){
+                    int indiceMarker = -1;
+                    for (int i = 0; i < keyListRut.size(); i++) {
+                        coordTemp = (double[]) dicCoordRut.get(keyListRut.get(i));
+                        if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
+                            indiceMarker = keyListRut.get(i);
+                        }
                     }
+
+                    //if (!(indiceMarker == -1)) {
+                        String[] infoTemp = (String[]) dicInfRut.get(indiceMarker);
+                        if (!infoTemp[0].equals("")) {
+                            TextView temperatura = (TextView) v.findViewById(R.id.temperaturaMarker);
+                            temperatura.setText("Weather: " + infoTemp[0]);
+                        }
+                        if (!infoTemp[1].equals("")) {
+                            TextView viento = (TextView) v.findViewById(R.id.vientoMarker);
+                            viento.setText("Wind: " + infoTemp[1]);
+                            System.out.println("entra a Viento");
+                        }
+                        if (!infoTemp[2].equals("")) {
+                            TextView hielo = (TextView) v.findViewById(R.id.hieloMarker);
+                            hielo.setText("Ice: " + infoTemp[2]);
+                        }
+                        if (!infoTemp[3].equals("")) {
+                            TextView texto = (TextView) v.findViewById(R.id.textoMarker);
+                            texto.setText("Details: " + infoTemp[3]);
+                            System.out.println("entra a Texto");
+                        }
+                    //}
                 }
 
-                if (!(indiceMarker == -1)) {
-                    String[] infoTemp = (String[]) dicInfRut.get(indiceMarker);
-                    if (!infoTemp[0].equals("")) {
-                        TextView temperatura = (TextView) v.findViewById(R.id.temperaturaMarker);
-                        temperatura.setText("Weather: " + infoTemp[0]);
-                    }
-                    if (!infoTemp[1].equals("")) {
-                        TextView viento = (TextView) v.findViewById(R.id.vientoMarker);
-                        viento.setText("Wind: " + infoTemp[1]);
-                        System.out.println("entra a Viento");
-                    }
-                    if (!infoTemp[2].equals("")) {
-                        TextView hielo = (TextView) v.findViewById(R.id.hieloMarker);
-                        hielo.setText("Ice: " + infoTemp[2]);
-                    }
-                    if (!infoTemp[3].equals("")) {
-                        TextView texto = (TextView) v.findViewById(R.id.textoMarker);
-                        texto.setText("Details: " + infoTemp[3]);
-                        System.out.println("entra a Texto");
-                    }
-                }
-
-                indiceMarker = -1;
+                if(marker.getTitle().equals("1")){
+                    int indiceMarker = -1;
 
                 /*----------------Marcadores de Reporte FALTA-----------------------*/
-                for (int i = 0; i < keyListRep.size(); i++) {
-                    coordTemp = (double[]) dicCoordRep.get(keyListRep.get(i));
-                    if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
-                        indiceMarker = keyListRep.get(i);
+                    for (int i = 0; i < keyListRep.size(); i++) {
+                        coordTemp = (double[]) dicCoordRep.get(keyListRep.get(i));
+                        if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
+                            indiceMarker = keyListRep.get(i);
+                        }
                     }
+
+                    //if (!(indiceMarker == -1)) {
+                        String[] infoTemp = (String[]) dicInfRep.get(indiceMarker);
+                        TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
+                        titulo.setText("Titulo: " + infoTemp[0]);
+                        TextView contenido = (TextView) v.findViewById(R.id.latitudMarker);
+                        contenido.setText("Contenido: " + infoTemp[1]);
+                        ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
+                        //imagenMarker.
+                    //}
                 }
 
-                if (!(indiceMarker == -1)) {
-                    String[] infoTemp = (String[]) dicInfRep.get(indiceMarker);
-                    TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
-                    titulo.setText("Titulo: " + infoTemp[0]);
-                    TextView contenido = (TextView) v.findViewById(R.id.latitudMarker);
-                    contenido.setText("Contenido: " + infoTemp[1]);
-                    ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
-                    //imagenMarker.
-                }
 
                 /*TextView latitud = (TextView) v.findViewById(R.id.latitudMarker);
                 latitud.setText("Latitud: " + latLng.latitude);
@@ -286,7 +291,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     indiceActual = (int) myLocationDbHelper.insertFullLocation(latLng.latitude, latLng.longitude);
                     myLocationDbHelper.updateInfo(indiceActual," ~ ~ ~ ");
                     options.position(latLng);
-                    options.title(indiceActual+"");
+                    options.title("-1");
                     mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                     Marker marker = mMap.addMarker(options);
                     marker.showInfoWindow();
@@ -305,7 +310,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     MarkerOptions options = new MarkerOptions();
                     options.position(latLng);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
-                    //options.
+                    options.title("1");
                     Marker marker = mMap.addMarker(options);
                     marker.showInfoWindow();
                     DialogReport dr = new DialogReport(marker, latLng.latitude, latLng.longitude);
@@ -329,57 +334,43 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
                 if(iBorrar)
                 {
-                    final int id = Integer.parseInt(marker.getTitle());
+                    final int tempType = Integer.parseInt(marker.getTitle());
                     marker.remove();
 
-                    int indexTemp = keyListRut.indexOf(id);
-                    if(indexTemp==-1){
-                        indexTemp = keyListRep.indexOf(id);
-                        keyListRep.remove(indexTemp);
-                        dicCoordRep.remove(indexTemp);
-                        dicInfRep.remove(indexTemp);
-                        myLocationDbHelper.deleteReport(id);
+                    LatLng latLng = marker.getPosition();
+                    double[] coordTemp;
+                    int indiceMarker = -1;
+
+                    if(tempType==-1){
+                        for (int i = 0; i < keyListRut.size(); i++) {
+                            coordTemp = (double[]) dicCoordRut.get(keyListRut.get(i));
+                            if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
+                                indiceMarker = keyListRut.get(i);
+                            }
+                        }
+
+                        keyListRut.remove(indiceMarker);
+                        dicCoordRut.remove(indiceMarker);
+                        dicInfRut.remove(indiceMarker);
+                        dicMarkRut.remove(indiceMarker);
+                        myLocationDbHelper.deleteLocation(indiceMarker);
+                        new HttpDelete().execute(indiceMarker + "");
                     }
                     else{
-                        keyListRut.remove(indexTemp);
-                        dicCoordRut.remove(id);
-                        dicInfRut.remove(id);
-                        dicMarkRut.remove(id);
-                        myLocationDbHelper.deleteLocation(id);
-                    }
-                    //---------------------FALTA
-                    new HttpDelete().execute(id + "");
-/*
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HttpDelete myHttpDelete = new HttpDelete();
-                            myHttpDelete.execute(id + "");
+                        for (int i = 0; i < keyListRep.size(); i++) {
+                            coordTemp = (double[]) dicCoordRep.get(keyListRep.get(i));
+                            if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
+                                indiceMarker = keyListRep.get(i);
+                            }
                         }
-                    });
+                        keyListRep.remove(indiceMarker);
+                        dicCoordRep.remove(indiceMarker);
+                        dicInfRep.remove(indiceMarker);
+                        dicMarkRep.remove(indiceMarker);
+                        myLocationDbHelper.deleteReport(indiceMarker);
 
-                    thread.run();
-*/
-
-                    /*
-                    double latTemp, longTemp;
-                    latTemp = latLng.latitude;
-                    longTemp = latLng.longitude;
-                    for (int indiceMarcadores : keyList) {
-                        Toast.makeText(MapsActivity.this, keyList + " :v", Toast.LENGTH_SHORT).show();
-                        double[] coordTemp = (double[]) dicCoordenadas.get(indiceMarcadores);
-                        if (coordTemp[0] == latTemp && coordTemp[1] == longTemp) {
-                            Toast.makeText(MapsActivity.this, "Entro aqui :v", Toast.LENGTH_SHORT).show();
-                            ((Marker) dicMarker.get(indiceMarcadores)).remove();
-                            dicCoordenadas.remove(indiceMarcadores);
-                            dicInfo.remove(indiceMarcadores);
-                            dicMarker.remove(indiceMarcadores);
-                            myLocationDbHelper.deleteLocation(indiceMarcadores);
-                            HttpDelete myHttpDelete = new HttpDelete();
-                            myHttpDelete.doInBackground(indiceMarcadores + "");
-                        }
                     }
-                    */
+
 
                 }
                 return false;
@@ -439,13 +430,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             int miInfo = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_INFO);
             int miTipo = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_TIPO);
 
-
-
-
             if(markersC.getInt(miTipo)==-1){
                 LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
 
-                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + ""));
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title("-1"));
                 keyListRut.add(markersC.getInt(id));
                 dicMarkRut.put(markersC.getInt(id), tempMarker);
                 dicCoordRut.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
@@ -453,13 +441,21 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             }
             else{
                 //----------------------FALTA---------
+
+                Cursor markersC2 = myLocationDbHelper.readSingleReport(id);
+
+                int titulo = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_TITULO);
+                int contenido = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_DESCRIPCION);
+                int path = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_PATH);
+
+
                 LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
 
-                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(markersC.getInt(id) + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title("1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 keyListRep.add(markersC.getInt(id));
                 dicMarkRep.put(markersC.getInt(id), tempMarker);
                 dicCoordRep.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
-                dicInfRep.put(markersC.getInt(id), new String[]{"","","",""});
+                dicInfRep.put(markersC.getInt(id), new String[]{markersC2.getString(titulo),markersC2.getString(contenido),markersC2.getString(path)});
             }
 
 
