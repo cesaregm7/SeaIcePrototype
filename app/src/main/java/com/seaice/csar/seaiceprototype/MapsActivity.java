@@ -626,6 +626,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 myLocationDbHelper.insertFullReport(jo.getDouble("lat"), jo.getDouble("lng"),jo.getString("titulo"),jo.getString("detalle"),jo.getString("path"));
             }
         }
+        updateMarkers();
     }
 
     public static MapsActivity getInstance()
