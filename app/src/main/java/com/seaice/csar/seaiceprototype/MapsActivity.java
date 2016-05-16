@@ -219,7 +219,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                         }
                     }
 
-                    //if (!(indiceMarker == -1)) {
+                    if (!(indiceMarker == -1)) {
                         String[] infoTemp = (String[]) dicInfRut.get(indiceMarker);
                         if (!infoTemp[0].equals("")) {
                             TextView temperatura = (TextView) v.findViewById(R.id.temperaturaMarker);
@@ -239,7 +239,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                             texto.setText("Details: " + infoTemp[3]);
                             System.out.println("entra a Texto");
                         }
-                    //}
+                    }
                 }
 
                 if(marker.getTitle().equals("1")){
@@ -253,7 +253,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                         }
                     }
 
-                    //if (!(indiceMarker == -1)) {
+                    if (!(indiceMarker == -1)) {
                         String[] infoTemp = (String[]) dicInfRep.get(indiceMarker);
                         TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
                         titulo.setText("Titulo: " + infoTemp[0]);
@@ -261,7 +261,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                         contenido.setText("Contenido: " + infoTemp[1]);
                         ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
                         //imagenMarker.
-                    //}
+                    }
                 }
 
 
@@ -348,13 +348,15 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                                 indiceMarker = keyListRut.get(i);
                             }
                         }
+                        //if(indiceMarker!=-1){
+                            keyListRut.remove(indiceMarker);
+                            dicCoordRut.remove(indiceMarker);
+                            dicInfRut.remove(indiceMarker);
+                            dicMarkRut.remove(indiceMarker);
+                            myLocationDbHelper.deleteLocation(indiceMarker);
+                            new HttpDelete().execute(indiceMarker + "");
+                       // }
 
-                        keyListRut.remove(indiceMarker);
-                        dicCoordRut.remove(indiceMarker);
-                        dicInfRut.remove(indiceMarker);
-                        dicMarkRut.remove(indiceMarker);
-                        myLocationDbHelper.deleteLocation(indiceMarker);
-                        new HttpDelete().execute(indiceMarker + "");
                     }
                     else{
                         for (int i = 0; i < keyListRep.size(); i++) {
@@ -363,12 +365,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                                 indiceMarker = keyListRep.get(i);
                             }
                         }
-                        keyListRep.remove(indiceMarker);
-                        dicCoordRep.remove(indiceMarker);
-                        dicInfRep.remove(indiceMarker);
-                        dicMarkRep.remove(indiceMarker);
-                        myLocationDbHelper.deleteReport(indiceMarker);
-
+                       // if(indiceMarker!=-1){
+                            keyListRep.remove(indiceMarker);
+                            dicCoordRep.remove(indiceMarker);
+                            dicInfRep.remove(indiceMarker);
+                            dicMarkRep.remove(indiceMarker);
+                            myLocationDbHelper.deleteReport(indiceMarker);
+                        //}
                     }
 
 
