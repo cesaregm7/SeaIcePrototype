@@ -371,7 +371,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                             dicCoordRep.remove(indiceMarker);
                             dicInfRep.remove(indiceMarker);
                             dicMarkRep.remove(indiceMarker);
-                            myLocationDbHelper.deleteReport(indiceMarker);
+                            myLocationDbHelper.deleteLocation(indiceMarker);
                         //}
                     }
 
