@@ -185,13 +185,16 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         String sortOrder =
                 COLUMN_NAME_ID + " ASC";
 
-        String selection = COLUMN_NAME_ID + " = " + String.valueOf(id);
+        //String selection = COLUMN_NAME_ID + " = " + String.valueOf(id);
+
+        String selection = COLUMN_NAME_ID + " = ?";
+        String[] selectionArgs = { String.valueOf(id) };
 
         return db.query(
-                TABLE_NAME_LOCATIONS,  // The table to query
+                TABLE_NAME_REPORTS,  // The table to query
                 projection,                               // The columns to return
                 selection,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
+                selectionArgs,                            // The values for the WHERE clause
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 sortOrder                                 // The sort order
