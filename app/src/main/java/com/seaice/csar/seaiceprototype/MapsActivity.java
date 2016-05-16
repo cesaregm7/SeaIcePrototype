@@ -254,6 +254,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     }
 
                     if (!(indiceMarker == -1)) {
+                        System.out.println(indiceMarker);
                         String[] infoTemp = (String[]) dicInfRep.get(indiceMarker);
                         TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
                         titulo.setText("Titulo: " + infoTemp[0]);
@@ -539,6 +540,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     {
         try {
             JSONArray responses = new JSONArray(response);
+            System.out.println("hola"+response);
             JSONObject jo = responses.getJSONObject(0);
             JSONArray mensajes = new JSONArray(jo.getString("mensaje"));
             for(int i = 0; i < mensajes.length(); i++)
@@ -591,6 +593,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         for(int i = 0; i < markerInfo.length(); i++)
         {
             JSONObject jo = markerInfo.getJSONObject(i);
+            System.out.println("bla"+jo.getInt("reporteid"));
             idTemp = jo.getInt("reporteid");
             if(keyListRep.contains(idTemp)){
                 /*((String[])dicInfRep.get(idTemp))[0] = jo.getString("titulo");
@@ -601,10 +604,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 myLocationDbHelper.updateReport(idTemp, jo.getString("titulo"), jo.getString("detalle"), jo.getString("path"));
             }
             else{
-                System.out.println("creo marker cian");
+                System.out.println("creo marker cian"+jo.getInt("reporteid"));
                 LatLng newMarker = new LatLng(jo.getDouble("lat"),jo.getDouble("lng"));
 
-                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(jo.getInt("reporteid") + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(jo.getInt("reporteid") + "1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 keyListRep.add(jo.getInt("reporteid"));
                 dicMarkRep.put(jo.getInt("reporteid"), tempMarker);
                 dicCoordRep.put(jo.getInt("reporteid"), new double[]{jo.getDouble("lat"), jo.getDouble("lng")});

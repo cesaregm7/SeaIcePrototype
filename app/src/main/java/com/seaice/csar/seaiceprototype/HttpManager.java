@@ -70,7 +70,7 @@ public class HttpManager extends AsyncTask<String, Void, String> {
 
             response = new String(bos.toByteArray());
 
-            //Log.v("Response PRE", response);
+            Log.v("Response PRE", response);
             termine = true;
 
             //EMPIEZA AQUI!
