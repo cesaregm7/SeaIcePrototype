@@ -586,6 +586,16 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 marker.showInfoWindow();
             }
         }
+
+        Enumeration<Marker> e = dicMarkRep.elements();
+        while(e.hasMoreElements()){
+            Marker marker = (Marker) e.nextElement();
+            if(marker.isInfoWindowShown())
+            {
+                marker.hideInfoWindow();
+                marker.showInfoWindow();
+            }
+        }
     }
 
     public void updateMarkerInfoHTTP(JSONArray markerInfo) throws JSONException {

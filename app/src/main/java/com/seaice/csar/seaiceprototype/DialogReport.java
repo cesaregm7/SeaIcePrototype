@@ -93,7 +93,7 @@ public class DialogReport extends DialogFragment {
                 MapsActivity.getInstance().dicMarkRep.put(indiceActual,marker);
                 MapsActivity.getInstance().dicCoordRep.put(indiceActual,new double[]{latitude, longitude});
                 MapsActivity.getInstance().dicInfRep.put(indiceActual,new String[]{hfu.Title, hfu.Description, finalFile.getAbsolutePath()});
-
+                MapsActivity.getInstance().updateMarkers();
                 /*
                 * keyListRep.add(markersC.getInt(id));
                 dicMarkRep.put(markersC.getInt(id), tempMarker);
