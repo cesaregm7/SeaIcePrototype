@@ -617,7 +617,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 System.out.println("creo marker cian"+jo.getInt("reporteid"));
                 LatLng newMarker = new LatLng(jo.getDouble("lat"),jo.getDouble("lng"));
 
-                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(jo.getInt("reporteid") + "1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title("1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
                 keyListRep.add(jo.getInt("reporteid"));
                 dicMarkRep.put(jo.getInt("reporteid"), tempMarker);
                 dicCoordRep.put(jo.getInt("reporteid"), new double[]{jo.getDouble("lat"), jo.getDouble("lng")});
