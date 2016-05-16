@@ -601,6 +601,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 myLocationDbHelper.updateReport(idTemp, jo.getString("titulo"), jo.getString("detalle"), jo.getString("path"));
             }
             else{
+                System.out.println("creo marker cian");
                 LatLng newMarker = new LatLng(jo.getDouble("lat"),jo.getDouble("lng"));
 
                 Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title(jo.getInt("reporteid") + "").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
