@@ -448,6 +448,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
 
                 Cursor markersC2 = myLocationDbHelper.readSingleReport(markersC.getInt(miTipo));
                 Toast.makeText(getApplicationContext(), "", Toast.LENGTH_LONG).show();
+                markersC2.moveToFirst();
 
                 int titulo = markersC2.getColumnIndex(myLocationDbHelper.COLUMN_NAME_TITULO);
                 int contenido = markersC2.getColumnIndex(myLocationDbHelper.COLUMN_NAME_DESCRIPCION);
