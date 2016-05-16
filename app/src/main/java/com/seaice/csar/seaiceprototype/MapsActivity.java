@@ -359,7 +359,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                        // }
 
                     }
-                    else{
+                    if(tempType==1){
                         for (int i = 0; i < keyListRep.size(); i++) {
                             coordTemp = (double[]) dicCoordRep.get(keyListRep.get(i));
                             if (latLng.latitude == coordTemp[0] && latLng.longitude == coordTemp[1]) {
