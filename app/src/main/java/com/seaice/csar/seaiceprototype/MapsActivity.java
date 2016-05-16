@@ -350,7 +350,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                             }
                         }
                         //if(indiceMarker!=-1){
-                            keyListRut.remove(indiceMarker);
+                            keyListRut.remove(keyListRut.indexOf(indiceMarker));
                             dicCoordRut.remove(indiceMarker);
                             dicInfRut.remove(indiceMarker);
                             dicMarkRut.remove(indiceMarker);
@@ -367,7 +367,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                             }
                         }
                        // if(indiceMarker!=-1){
-                            keyListRep.remove(indiceMarker);
+                            keyListRep.remove(keyListRep.indexOf(indiceMarker));
                             dicCoordRep.remove(indiceMarker);
                             dicInfRep.remove(indiceMarker);
                             dicMarkRep.remove(indiceMarker);
