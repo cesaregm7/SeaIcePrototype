@@ -587,9 +587,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             }
         }
 
-        Enumeration<Marker> e = dicMarkRep.elements();
-        while(e.hasMoreElements()){
-            Marker marker = (Marker) e.nextElement();
+        Enumeration<Marker> e1 = dicMarkRep.elements();
+        while(e1.hasMoreElements()){
+            Marker marker = (Marker) e1.nextElement();
             if(marker.isInfoWindowShown())
             {
                 marker.hideInfoWindow();
