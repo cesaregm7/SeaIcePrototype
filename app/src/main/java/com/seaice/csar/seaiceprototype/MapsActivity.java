@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,9 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         ctx = this;
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
         final LinearLayout ll = new LinearLayout(this);
         final ImageButton closeRoute = new ImageButton(this);
@@ -235,13 +239,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                         contenido.setText("Contenido: " + infoTemp[1]);
                         ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
                         //imagenMarker.
-                        String urldisplay = "http://seaice-jayala.rhcloud.com/reportes/" + infoTemp[2];
+                        String urldisplay = "https://seaice-jayala.rhcloud.com/reportes/" + infoTemp[2];
+                        System.out.println("url: "+urldisplay);
                         Bitmap mIcon11 = null;
                         try {
                             InputStream in = new java.net.URL(urldisplay).openStream();
                             mIcon11 = BitmapFactory.decodeStream(in);
                         } catch (Exception e) {
-                            Log.e("Error", e.getMessage());
+                            //Log.e("Error", e.getMessage());
                             e.printStackTrace();
                         }
                         imagenMarker.setImageBitmap(mIcon11);

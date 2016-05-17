@@ -15,6 +15,7 @@
             android:adjustViewBounds="true"
             android:src="@drawable/ic_route_sign_48"
             android:longClickable="false"
+            android:layout_gravity="center"
             android:id="@+id/imageMarker" />
 
         <TextView
