@@ -579,7 +579,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 dicCoordRep.put(jo.getInt("reporteid"), new double[]{jo.getDouble("lat"), jo.getDouble("lng")});
                 dicInfRep.put(jo.getInt("reporteid"), new String[]{jo.getString("titulo"),jo.getString("detalle"),jo.getString("path")});
 
-                myLocationDbHelper.insertFullReport(jo.getDouble("lat"), jo.getDouble("lng"),jo.getString("titulo"),jo.getString("detalle"),jo.getString("path"));
+                myLocationDbHelper.insertFullReport(jo.getDouble("lat"), jo.getDouble("lng"),jo.getString("titulo"),jo.getString("detalle"),jo.getString("path"),jo.getInt("reporteid"));
             }
         }
         updateMarkers();

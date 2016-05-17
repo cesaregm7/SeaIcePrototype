@@ -138,7 +138,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public long insertFullLocation(long id, double latitud, double longitud)
+    public long insertFullLocation(double latitud, double longitud)
     {
         return insertLocation(latitud,longitud,-1, -1);
     }

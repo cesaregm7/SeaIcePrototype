@@ -88,12 +88,14 @@ public class DialogReport extends DialogFragment {
             @Override
             public void onClick(View v) {
                 UploadFile(titulo.getText().toString(),descripcion.getText().toString());
-                indiceActual = (int) MapsActivity.getInstance().myLocationDbHelper.insertFullReport(latitude, longitude, hfu.Title, hfu.Description, finalFile.getAbsolutePath());
+                /*indiceActual = (int) MapsActivity.getInstance().myLocationDbHelper.insertFullReport(latitude, longitude, hfu.Title, hfu.Description, finalFile.getAbsolutePath());
                 MapsActivity.getInstance().keyListRep.add(indiceActual);
                 MapsActivity.getInstance().dicMarkRep.put(indiceActual,marker);
                 MapsActivity.getInstance().dicCoordRep.put(indiceActual,new double[]{latitude, longitude});
                 MapsActivity.getInstance().dicInfRep.put(indiceActual,new String[]{hfu.Title, hfu.Description, finalFile.getAbsolutePath()});
-                MapsActivity.getInstance().updateMarkers();
+                MapsActivity.getInstance().updateMarkers();*/
+                MapsActivity.getInstance().sendRequestNetwork();
+
                 /*
                 * keyListRep.add(markersC.getInt(id));
                 dicMarkRep.put(markersC.getInt(id), tempMarker);
