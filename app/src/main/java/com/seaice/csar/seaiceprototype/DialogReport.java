@@ -265,6 +265,8 @@ public class DialogReport extends DialogFragment {
                 String s=b.toString();
                 Log.i("Response",s);
                 dos.close();
+
+                MapsActivity.getInstance().sendRequestNetwork();
             }
             catch (MalformedURLException ex)
             {
