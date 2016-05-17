@@ -137,23 +137,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 .findFragmentById(R.id.map);
         mMap = mapFragment.getMap();
 
-
-        /*double[] punto1 = {64.2008, -149.4937};
-        double[] punto2 = {50.5889, -82.3308};
-        double[] punto3 = {38.89, -77.03};
-        String[] coso1 = {"","","",""};
-        String[] coso2 = {"","","",""};
-        String[] coso3 = {"","","",""};
-
-        dicCoordenadas.put(0, punto1);
-        dicCoordenadas.put(1, punto2);
-        dicCoordenadas.put(2, punto3);
-        dicInfo.put(0, coso1);
-        dicInfo.put(1, coso2);
-        dicInfo.put(2, coso3);
-        keyList.add(0);
-        keyList.add(1);
-        keyList.add(2);*/
         FabSpeedDial fabSpeedDial = (FabSpeedDial) findViewById(R.id.fab_speed_dial);
         assert fabSpeedDial != null;
         fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
@@ -174,16 +157,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     //RECIBIR REQUEST
                     //putDataMap(prueba);
 
-
-
-
-                } else if (botonSeleccionado.equals("Route")) {
+                } else if (botonSeleccionado.equals("Weather")) {
                     iRuta = true;
                     ll.addView(closeRoute);
                     idsMandar.clear();
                     lngsMandar.clear();
                     latsMandar.clear();
-
 
                 } else if (botonSeleccionado.equals("Report")) {
                     //-------Nuevo------
@@ -223,21 +202,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                         String[] infoTemp = (String[]) dicInfRut.get(indiceMarker);
                         if (!infoTemp[0].equals("")) {
                             TextView temperatura = (TextView) v.findViewById(R.id.temperaturaMarker);
-                            temperatura.setText("Weather: " + infoTemp[0]);
+                            temperatura.setText("Temp.: " + infoTemp[0] + " K");
                         }
                         if (!infoTemp[1].equals("")) {
                             TextView viento = (TextView) v.findViewById(R.id.vientoMarker);
-                            viento.setText("Wind: " + infoTemp[1]);
-                            System.out.println("entra a Viento");
-                        }
-                        if (!infoTemp[2].equals("")) {
-                            TextView hielo = (TextView) v.findViewById(R.id.hieloMarker);
-                            hielo.setText("Ice: " + infoTemp[2]);
-                        }
-                        if (!infoTemp[3].equals("")) {
-                            TextView texto = (TextView) v.findViewById(R.id.textoMarker);
-                            texto.setText("Details: " + infoTemp[3]);
-                            System.out.println("entra a Texto");
+                            viento.setText("Wind: " + infoTemp[1].split(" ")[0] + " m/s; "+ infoTemp[1].split(" ")[1]+" deg;");
                         }
                     }
                 }
@@ -256,27 +225,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                     if (!(indiceMarker == -1)) {
                         System.out.println(indiceMarker);
                         String[] infoTemp = (String[]) dicInfRep.get(indiceMarker);
-                        TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
+                        TextView titulo = (TextView) v.findViewById(R.id.temperaturaMarker);
                         titulo.setText("Titulo: " + infoTemp[0]);
-                        TextView contenido = (TextView) v.findViewById(R.id.latitudMarker);
+                        TextView contenido = (TextView) v.findViewById(R.id.vientoMarker);
                         contenido.setText("Contenido: " + infoTemp[1]);
                         ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
                         //imagenMarker.
                     }
                 }
-
-
-                /*TextView latitud = (TextView) v.findViewById(R.id.latitudMarker);
-                latitud.setText("Latitud: " + latLng.latitude);
-
-                TextView longitud = (TextView) v.findViewById(R.id.longitudMarker);
-                longitud.setText("Longitud: " + latLng.longitude);
-
-                ImageView imagen = (ImageView) v.findViewById(R.id.imageMarker);
-
-                TextView titulo = (TextView) v.findViewById(R.id.titleMarker);
-
-                TextView descripcion = (TextView) v.findViewById(R.id.textoMarker);*/
 
                 return v;
             }
@@ -393,18 +349,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         mMap.setMyLocationEnabled(true);
         mapFragment.getMapAsync(this);
 
-        final Switch travelingMode = (Switch) findViewById(R.id.switch1);
-        travelingMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(travelingMode.isChecked()){
-                    travelingMode.setText("Traveling: On");
-                }
-                else{
-                    travelingMode.setText("Traveling: Off");
-                }
-            }
-        });
         ll.setGravity((Gravity.RIGHT | Gravity.BOTTOM));
         this.addContentView(ll,
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
@@ -511,9 +455,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             String stringInfo = miInfoTemp[0]+" ~"+miInfoTemp[1]+" ~"+miInfoTemp[2]+" ~ "+miInfoTemp[3];
             myLocationDbHelper.updateInfo(idTemp,stringInfo);
         }
-
-
-        //String stringInfo = ((String[])dicInfo.get(index))[0]+"~"
         updateMarkers();
     }
     private boolean isNetworkAvailable() {
@@ -540,7 +481,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
     {
         try {
             JSONArray responses = new JSONArray(response);
-            System.out.println("hola"+response);
             JSONObject jo = responses.getJSONObject(0);
             JSONArray mensajes = new JSONArray(jo.getString("mensaje"));
             for(int i = 0; i < mensajes.length(); i++)
@@ -606,9 +546,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
             System.out.println("bla"+jo.getInt("reporteid"));
             idTemp = jo.getInt("reporteid");
             if(keyListRep.contains(idTemp)){
-                /*((String[])dicInfRep.get(idTemp))[0] = jo.getString("titulo");
-                ((String[])dicInfRep.get(idTemp))[1] = jo.getString("detalle");
-                ((String[])dicInfRep.get(idTemp))[2] = jo.getString("path");*/
                 dicInfRep.put(idTemp, new String[]{jo.getString("titulo"),jo.getString("detalle"),jo.getString("path")});
 
                 myLocationDbHelper.updateReport(idTemp, jo.getString("titulo"), jo.getString("detalle"), jo.getString("path"));

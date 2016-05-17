@@ -11,7 +11,7 @@
     <item
         android:id="@+id/action_route"
         android:icon="@drawable/ic_route_sign_48"
-        android:title="Route" />
+        android:title="Weather" />
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_cancel_48"

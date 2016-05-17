@@ -228,8 +228,6 @@ public class DialogReport extends DialogFragment {
                 dos.writeBytes("Content-Disposition: form-data; name=\"imagen\";filename=\"" + iFileName +"\"" + lineEnd);
                 dos.writeBytes(lineEnd);
 
-                Log.e(Tag,"Headers are written");
-
                 // create a buffer of maximum size
                 int bytesAvailable = fileInputStream.available();
 

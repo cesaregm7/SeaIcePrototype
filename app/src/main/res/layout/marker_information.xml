@@ -18,32 +18,11 @@
             android:id="@+id/imageMarker" />
 
         <TextView
-            android:id="@+id/titleMarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/latitudMarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/longitudMarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/textoMarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textStyle="bold"/>
+        android:id="@+id/temperaturaMarker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/vientoMarker"
@@ -52,19 +31,6 @@
             android:textSize="12dp"
             android:textStyle="bold"/>
 
-        <TextView
-        android:id="@+id/temperaturaMarker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/hieloMarker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12dp"
-            android:textStyle="bold"/>
     </LinearLayout>
 
 </LinearLayout>
