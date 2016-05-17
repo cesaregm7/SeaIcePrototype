@@ -118,12 +118,11 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    private long insertLocation(long id, double latitud, double longitud, long tipo, long id_server)
+    private long insertLocation(double latitud, double longitud, long tipo, long id_server)
     {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(COLUMN_NAME_ID, id);
         values.put(COLUMN_NAME_ID_SERVER, id_server);
         values.put(COLUMN_NAME_LATITUD, (float)latitud);
         values.put(COLUMN_NAME_LONGITUD, (float)longitud);
@@ -141,17 +140,17 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     public long insertFullLocation(long id, double latitud, double longitud)
     {
-        return insertLocation(id, latitud,longitud,-1, -1);
+        return insertLocation(latitud,longitud,-1, -1);
     }
 
-    public long insertFullReport(long id, double latitud, double longitud,String titulo, String descripcion, String path, long id_server)
+    public long insertFullReport(double latitud, double longitud,String titulo, String descripcion, String path, long id_server)
     {
         long tipo = insertReport(titulo, descripcion, path);
         if(tipo < 0)
         {
             Log.e("ERROR Tipo:","tipo: "+tipo);
         }
-        return insertLocation(id, latitud,longitud, tipo, id_server);
+        return insertLocation(latitud,longitud, tipo, id_server);
     }
 
     public boolean deleteLocation(long id)
