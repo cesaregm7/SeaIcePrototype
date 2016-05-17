@@ -218,6 +218,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 // you will actually use after this query.
         String[] projection = {
                 COLUMN_NAME_ID,
+                COLUMN_NAME_ID_SERVER,
                 COLUMN_NAME_LATITUD,
                 COLUMN_NAME_LONGITUD,
                 COLUMN_NAME_INFO,
