@@ -415,16 +415,16 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                 int titulo = markersC2.getColumnIndex(myLocationDbHelper.COLUMN_NAME_TITULO);
                 int contenido = markersC2.getColumnIndex(myLocationDbHelper.COLUMN_NAME_DESCRIPCION);
                 int path = markersC2.getColumnIndex(myLocationDbHelper.COLUMN_NAME_PATH);
-
+                int idServer = markersC.getColumnIndex(myLocationDbHelper.COLUMN_NAME_ID_SERVER);
                 System.out.println(titulo+", "+contenido+", "+path+", "+id);
 
                 LatLng newMarker = new LatLng(markersC.getFloat(lat),markersC.getFloat(lng));
 
                 Marker tempMarker = mMap.addMarker(new MarkerOptions().position(newMarker).title("1").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-                keyListRep.add(markersC.getInt(id));
-                dicMarkRep.put(markersC.getInt(id), tempMarker);
-                dicCoordRep.put(markersC.getInt(id), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
-                dicInfRep.put(markersC.getInt(id), new String[]{markersC2.getString(titulo),markersC2.getString(contenido),markersC2.getString(path)});
+                keyListRep.add(markersC.getInt(idServer));
+                dicMarkRep.put(markersC.getInt(idServer), tempMarker);
+                dicCoordRep.put(markersC.getInt(idServer), new double[]{(double) markersC.getFloat(lat), (double) markersC.getFloat(lng)});
+                dicInfRep.put(markersC.getInt(idServer), new String[]{markersC2.getString(titulo),markersC2.getString(contenido),markersC2.getString(path)});
             }
 
 
