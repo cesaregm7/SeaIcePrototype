@@ -483,7 +483,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
         return activeNetworkInfo != null;
     }
 
-    private void sendRequestNetwork() {
+    public void sendRequestNetwork() {
         String telefono="+50230359588";
         String requestString = "get:";
         for (int localIdC : keyListRut){
