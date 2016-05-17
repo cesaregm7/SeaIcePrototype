@@ -16,10 +16,12 @@ public class LocationDbHelper extends SQLiteOpenHelper {
     public static final String TABLE_NAME_REPORTS = "Reports";
 
     public static final String COLUMN_NAME_ID = "Id";
+    public static final String COLUMN_NAME_ID_SERVER = "IdServer";
     public static final String COLUMN_NAME_LATITUD = "Latitud";
     public static final String COLUMN_NAME_LONGITUD = "Longitud";
     public static final String COLUMN_NAME_INFO= "Info";
     public static final String COLUMN_NAME_TIPO= "Tipo";
+
 
     public static final String COLUMN_NAME_TITULO= "Titulo";
     public static final String COLUMN_NAME_DESCRIPCION= "Descripcion";
@@ -27,7 +29,8 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_LOCATIONS =
             "CREATE TABLE " + TABLE_NAME_LOCATIONS + " (" +
-                    COLUMN_NAME_ID + " INTEGER," + // PRIMARY KEY
+                    COLUMN_NAME_ID + " INTEGER PRIMARY KEY," + // PRIMARY KEY
+                    COLUMN_NAME_ID_SERVER + " INTEGER, " +
                     COLUMN_NAME_LATITUD + " REAL, " +
                     COLUMN_NAME_LONGITUD + " REAL," +
                     COLUMN_NAME_INFO + " TEXT," +
@@ -115,12 +118,13 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    private long insertLocation(long id, double latitud, double longitud, long tipo)
+    private long insertLocation(long id, double latitud, double longitud, long tipo, long id_server)
     {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME_ID, id);
+        values.put(COLUMN_NAME_ID_SERVER, id_server);
         values.put(COLUMN_NAME_LATITUD, (float)latitud);
         values.put(COLUMN_NAME_LONGITUD, (float)longitud);
         values.put(COLUMN_NAME_INFO, "");
@@ -137,17 +141,17 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     public long insertFullLocation(long id, double latitud, double longitud)
     {
-        return insertLocation(id, latitud,longitud,-1);
+        return insertLocation(id, latitud,longitud,-1, -1);
     }
 
-    public long insertFullReport(long id, double latitud, double longitud,String titulo, String descripcion, String path)
+    public long insertFullReport(long id, double latitud, double longitud,String titulo, String descripcion, String path, long id_server)
     {
         long tipo = insertReport(titulo, descripcion, path);
         if(tipo < 0)
         {
             Log.e("ERROR Tipo:","tipo: "+tipo);
         }
-        return insertLocation(id, latitud,longitud, tipo);
+        return insertLocation(id, latitud,longitud, tipo, id_server);
     }
 
     public boolean deleteLocation(long id)
