@@ -4,12 +4,15 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -231,6 +235,16 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                         contenido.setText("Contenido: " + infoTemp[1]);
                         ImageView imagenMarker = (ImageView) v.findViewById(R.id.imageMarker);
                         //imagenMarker.
+                        String urldisplay = "http://seaice-jayala.rhcloud.com/reportes/" + infoTemp[2];
+                        Bitmap mIcon11 = null;
+                        try {
+                            InputStream in = new java.net.URL(urldisplay).openStream();
+                            mIcon11 = BitmapFactory.decodeStream(in);
+                        } catch (Exception e) {
+                            Log.e("Error", e.getMessage());
+                            e.printStackTrace();
+                        }
+                        imagenMarker.setImageBitmap(mIcon11);
                     }
                 }
 
