@@ -27,7 +27,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABLE_LOCATIONS =
             "CREATE TABLE " + TABLE_NAME_LOCATIONS + " (" +
-                    COLUMN_NAME_ID + " INTEGER PRIMARY KEY," +
+                    COLUMN_NAME_ID + " INTEGER," + // PRIMARY KEY
                     COLUMN_NAME_LATITUD + " REAL, " +
                     COLUMN_NAME_LONGITUD + " REAL," +
                     COLUMN_NAME_INFO + " TEXT," +
@@ -115,11 +115,12 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    private long insertLocation(double latitud, double longitud, long tipo)
+    private long insertLocation(long id, double latitud, double longitud, long tipo)
     {
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME_ID, id);
         values.put(COLUMN_NAME_LATITUD, (float)latitud);
         values.put(COLUMN_NAME_LONGITUD, (float)longitud);
         values.put(COLUMN_NAME_INFO, "");
@@ -134,19 +135,19 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
-    public long insertFullLocation(double latitud, double longitud)
+    public long insertFullLocation(long id, double latitud, double longitud)
     {
-        return insertLocation(latitud,longitud,-1);
+        return insertLocation(id, latitud,longitud,-1);
     }
 
-    public long insertFullReport(double latitud, double longitud,String titulo, String descripcion, String path)
+    public long insertFullReport(long id, double latitud, double longitud,String titulo, String descripcion, String path)
     {
         long tipo = insertReport(titulo, descripcion, path);
         if(tipo < 0)
         {
             Log.e("ERROR Tipo:","tipo: "+tipo);
         }
-        return insertLocation(latitud,longitud, tipo);
+        return insertLocation(id, latitud,longitud, tipo);
     }
 
     public boolean deleteLocation(long id)
