@@ -38,6 +38,7 @@ public class HttpDelete extends AsyncTask<String, Void, String> {
             params.put("telefono", "+50230359588");
             //Datos del post
             params.put("id", parameters[0]);
+            params.put("tipo", parameters[1]); //ruta o reporte
 
 
             StringBuilder postData = new StringBuilder();

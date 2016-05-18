@@ -330,7 +330,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleMap.OnInfoW
                             dicInfRut.remove(indiceMarker);
                             dicMarkRut.remove(indiceMarker);
                             myLocationDbHelper.deleteLocation(indiceMarker);
-                            new HttpDelete().execute(indiceMarker + "");
+                            new HttpDelete().execute(indiceMarker + "", "ruta");
                        // }
 
                     }
