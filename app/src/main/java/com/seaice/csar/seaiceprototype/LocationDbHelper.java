@@ -165,16 +165,16 @@ public class LocationDbHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME_LOCATIONS, selection, selectionArgs) > 0;
     }
 
-    public boolean deleteReport(long id)
+    public boolean deleteReport(long id_server)
     {
         SQLiteDatabase db = getWritableDatabase();
 
         // Define 'where' part of query.
-        String selection = COLUMN_NAME_ID + " = ?";
+        String selection = COLUMN_NAME_ID_SERVER + " = ?";
 // Specify arguments in placeholder order.
-        String[] selectionArgs = { String.valueOf(id) };
+        String[] selectionArgs = { String.valueOf(id_server) };
 // Issue SQL statement.
-        return db.delete(TABLE_NAME_REPORTS, selection, selectionArgs) > 0;
+        return db.delete(TABLE_NAME_LOCATIONS, selection, selectionArgs) > 0;
     }
 
     public Cursor readSingleReport(long id)
